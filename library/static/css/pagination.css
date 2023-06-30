@@ -1,0 +1,12 @@
+.pagination .page-link {
+    background: #212529;
+    color: white;
+}
+
+td a {
+    display: block;
+}
+
+.form-control::-webkit-input-placeholder {
+  color: white;
+}

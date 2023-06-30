@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+    <div class="d-flex">
+        <div class="border border-4 overflow-hidden border-secondary rounded d-flex mx-3"
+             style="width: 256px; height: 256px">
+            <img src="https://ia903204.us.archive.org/4/items/discordprofilepictures/discordblue.png">
+        </div>
+        <div class="d-flex mx-5 align-items-center">
+            <div class="text-center mx-2 ms-5" style="width: 10em">
+                <p>Login:</p>
+                <p>Nickname: </p>
+                <p>Email:</p>
+                <p>Joined:</p>
+                <p>Last Login:</p>
+            </div>
+            <div class="text-left">
+                <p><b>{{ user.username }}</b></p>
+                <p>
+                    <b>{{ profile }}</b>
+                    <a href="{% url 'profile-display-update' %}">
+                        <button type="button" class="btn btn-secondary"
+                                style="--bs-btn-padding-y: .1rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                            Change Nickname
+                        </button>
+                    </a>
+                </p>
+                <p>
+                    <b>{{ user.email }}</b>
+                    <a href="{% url 'profile-email-update' %}">
+                        <button type="button" class="btn btn-secondary"
+                                style="--bs-btn-padding-y: .1rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                            Change Email
+                        </button>
+                    </a>
+                </p>
+                <p><b>{{ user.date_joined|date }}</b></p>
+                <p><b>{{ user.last_login|date }}</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="p-3 d-flex">
+        <div class="border-top border-secondary flex-fill text-center py-3">
+            <p>SMALL GAME LIST</p>
+            <div class="border p-3 my-3 mx-3">
+                games go here
+            </div>
+        </div>
+        <div class="border-top border-secondary flex-fill text-center py-3">
+            FRIEND LIST HERE
+            <div class="border p-3 my-3 mx-3">
+                friends go here
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}List of Games{% endblock %}
+{% load static %}
+{% block extra_css %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static '/css/pagination.css' %}"/>
+{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="w-25 d-flex p-3 align-items-center">
+            <p class="my-auto">Search:</p>
+            <input class="form-control bg-dark text-white ms-3" id="myInput" type="text" placeholder="Search..">
+    </div>
+    <table id='table'
+           data-toggle="table"
+           data-search="true"
+           data-filter-control="true"
+           class="table table-dark table-hover">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Title</th>
+            <th scope="col">Genre</th>
+            <th scope="col">Price</th>
+            <th scope="col">Release Date</th>
+        </tr>
+        </thead>
+        <tbody id="myTable">
+        {% for game in object_list %}
+            <tr style="transform: rotate(0);">
+                <th scope="row" class="d-flex justify-content-center">
+                    <div class="border rounded" style="width: 50px; height: 50px; overflow: hidden">
+                        <a href="{% url 'game-read-detail' game.id %}" class="stretched-link">
+                            <img class="img-fluid"
+                                 src="https://www.gamespot.com/a/uploads/scale_medium/1197/11970954/2345802-2225493-path_of_exile_box.jpg">
+                        </a>
+                    </div>
+                </th>
+                <td style="vertical-align: middle">{{ game.title }}</td>
+                <td style="vertical-align: middle">
+                    {% for genre in game.genre.all %}
+                        {% if game.genre.last == genre %}
+                            {{ genre.name }}
+                        {% else %}
+                            {{ genre.name }},
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td style="vertical-align: middle">{{ game.price }}</td>
+                <td style="vertical-align: middle">{{ game.release|date }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <nav aria-label="...">
+        <ul class="pagination d-flex justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+            {% endif %}
+            {% for page in paginator.page_range %}
+                {% if page_obj.number == page %}
+                    <li class="page-item active"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+

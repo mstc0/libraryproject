@@ -1,0 +1,18 @@
+select {
+    overflow: hidden;
+}
+
+.form-control {
+    background-color: rgb(45, 52, 61);
+    color: white;
+}
+
+.form-control:focus {
+    background-color: rgb(45, 52, 61);
+    color: white;
+}
+
+.form-select{
+    background-color: rgb(45, 52, 61);
+    color: white;
+}

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    {% block extra_css %}{% endblock %}
+    <title>{% block title %}BASE{% endblock %}</title>
+</head>
+<body class="text-light" style="background-color: #323435">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary" style="height: 5em">
+    <div class="container-fluid container w-50">
+        <a class="navbar-brand" href="#">TESTAPP</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'game-read' %}">Games</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Marketplace</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+            </ul>
+            {% if user.is_authenticated %}
+                <ul class="navbar-nav mb-2 mb-lg-0 ">
+                    <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ user_extra }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
+                                    aria-labelledby="navbarDarkDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="{% url 'profile' %}">My Profile</a></li>
+                                    <li><a class="dropdown-item" href="#">Messages<span class="badge text-bg-secondary ms-3">4</span> </a></li>
+                                    <li><a class="dropdown-item" href="#">Events</a></li>
+                                    {% if user.is_authenticated %}
+                                    <li><a class="dropdown-item" href="#">Admin Panel</a></li>
+                                    {% endif %}
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </ul>
+            {% else %}
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li>
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#">Register</a>
+                    </li>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+<div class="border border-secondary container w-50 mt-5 p-3">
+    {% block content %}
+    {% endblock %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+</html>
