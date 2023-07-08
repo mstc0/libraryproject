@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import LogoutView
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, View
+from django.views.generic import CreateView, UpdateView, View, TemplateView
 from library import forms, models
-
+from .cart import Cart
 # Create your views_dir here.
 
 
@@ -46,3 +46,25 @@ class ProfileEmailUpdateView(UpdateView):
     def get_object(self):
         return self.request.user
 
+
+class AdminPanel(TemplateView):
+    template_name = 'adminpanel.html'
+
+
+def cart_add(request, game_id):
+    cart = Cart(request)
+    game = get_object_or_404(models.Game, id=game_id)
+    cart.add(game=game)
+    return redirect(reverse_lazy('cart'))
+
+
+def cart_remove(request, game_id):
+    cart = Cart(request)
+    game = get_object_or_404(models.Game, id=game_id)
+    cart.remove(game=game)
+    return redirect(reverse_lazy('cart'))
+
+
+def cart_detail(request):
+    cart = Cart(request)
+    return render(request, 'cart.html', {'cart': cart})

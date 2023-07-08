@@ -33,6 +33,11 @@
             </ul>
             {% if user.is_authenticated %}
                 <ul class="navbar-nav mb-2 mb-lg-0 ">
+                        <li>
+                            <h3>
+                                <a class="nav-link" href="{% url 'cart' %}">🛒</a>
+                            </h3>
+                        </li>
                     <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
@@ -43,10 +48,11 @@
                                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
                                     aria-labelledby="navbarDarkDropdownMenuLink">
                                     <li><a class="dropdown-item" href="{% url 'profile' %}">My Profile</a></li>
-                                    <li><a class="dropdown-item" href="#">Messages<span class="badge text-bg-secondary ms-3">4</span> </a></li>
+                                    <li><a class="dropdown-item" href="#">Messages<span
+                                            class="badge text-bg-secondary ms-3">4</span> </a></li>
                                     <li><a class="dropdown-item" href="#">Events</a></li>
                                     {% if user.is_authenticated %}
-                                    <li><a class="dropdown-item" href="#">Admin Panel</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'admin-panel' %}">Admin Panel</a></li>
                                     {% endif %}
                                     <li>
                                         <hr class="dropdown-divider">

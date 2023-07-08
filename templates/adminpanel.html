@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Admin Panel{% endblock %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static '/css/dm.css' %}"/>
+{% endblock %}
+{% block content %}
+    <div class="p-3 d-flex">
+        <div class="flex-fill text-center py-3">
+            <p>GAMES</p>
+            <div class="border border-secondary p-3 my-3 mx-3" style="height: 400px; overflow-y: scroll">
+                games go here
+            </div>
+        </div>
+        <div class="flex-fill text-center py-3">
+            GENRES
+            <div class="border border-secondary p-3 my-3 mx-3" style="height: 400px; overflow-y: scroll">
+                friends go here
+            </div>
+        </div>
+    </div>
+    <div class="p-3 d-flex">
+        <div class="flex-fill text-center py-3">
+            <p>DEVELOPERS</p>
+            <div class="border border-secondary p-3 my-3 mx-3" style="height: 400px; overflow-y: scroll">
+                games go here
+            </div>
+        </div>
+        <div class="flex-fill text-center py-3">
+            PUBLISHERS
+            <div class="border border-secondary p-3 my-3 mx-3" style="height: 400px; overflow-y: scroll">
+                friends go here
+            </div>
+        </div>
+    </div>
+{% endblock %}

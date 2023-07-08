@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}My Cart{% endblock %}
+{% block content %}
+    <div class="text-center bg-dark p-2 mt-2">
+        <h3>Games in cart: {{ cart|length }}</h3>
+        <h3>Total value: ${{ cart.get_total_price }}</h3>
+        <button type="button" href="#" class="btn btn-success"><b>Pay For All</b></button>
+    </div>
+    <table id='table' class="table table-dark table-hover mx-auto">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Game</th>
+            <th scope="col">Price</th>
+            <th scope="col">Remove</th>
+        </tr>
+        </thead>
+        <tbody id="myTable">
+        {% for item in cart %}
+            {% with game=item.game %}
+                <tr style="transform: rotate(0);">
+                    <th scope="row" class="d-flex justify-content-center">
+                        <div class="border rounded" style="width: 50px; height: 50px; overflow: hidden">
+                            <a href="{% url 'game-read-detail' game.id %}">
+                                <img class="img-fluid"
+                                     src="https://www.gamespot.com/a/uploads/scale_medium/1197/11970954/2345802-2225493-path_of_exile_box.jpg">
+                            </a>
+                        </div>
+                    </th>
+                    <td style="vertical-align: middle">{{ game.title }}</td>
+                    <td style="vertical-align: middle">${{ game.price }}</td>
+                    <td style="vertical-align: middle">
+                        <form action="{% url 'cart-remove' game.id %}" method="POST">
+                            <button type="submit" value="Remove" class="btn btn-danger">✕</button>
+                            {% csrf_token %}
+                        </form>
+                    </td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="4" class="p-4"></td>
+        </tr>
+        </tfoot>
+    </table>
+
+{% endblock %}

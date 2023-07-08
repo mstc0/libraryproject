@@ -27,7 +27,12 @@ urlpatterns = [
     path('accounts/profile/update/display', views.ProfileDisplayUpdateView.as_view(), name='profile-display-update'),
     path('accounts/register/', views.RegisterCreateView.as_view(), name='register'),
     path('accounts/logout/', views.CustomLogoutView.as_view(), name='logout'),
+    path('manage/admin', views.AdminPanel.as_view(), name='admin-panel'),
     path('test', views.test),
+    # -- CART --
+    path('cart', views.cart_detail, name='cart'),
+    path('cart/add/<int:game_id>', views.cart_add, name='cart-add'),
+    path('cart/remove/<int:game_id>', views.cart_remove, name='cart-remove'),
     # -- GAME --
     path('manage/game/create', game.GameCreateView.as_view(), name='game-create'),
     path('manage/game/update/<pk>', game.GameUpdateView.as_view(), name='game-update'),

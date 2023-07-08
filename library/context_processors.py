@@ -1,5 +1,5 @@
 from library import models
-
+from .cart import Cart
 
 def get_profile(req):
     try:
@@ -7,3 +7,7 @@ def get_profile(req):
     except:
         profile_extra = ""
     return {'user_extra': profile_extra}
+
+def get_cart(req):
+    cart = Cart(req)
+    return {'cart': cart}

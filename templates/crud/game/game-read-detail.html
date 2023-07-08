@@ -8,7 +8,8 @@
              style="overflow: hidden; height: 400px; background-image: url('https://i.imgur.com/I3DIwEF.jpeg'); background-position: center">
             <div class="border-top border-secondary p-3 bg-dark mt-5 flex-fill text-center d-flex justify-content-between">
                 <div class="d-flex bg-black border rounded border-black mx-5">
-                    <button type="button" class="btn btn-success">Add to Cart</button>
+                    <button type="button" href="{% url 'cart-add' game.id %}" class="btn btn-success">Add to Cart</button>
+                    <a href="{% url 'cart-add' game.id %}">TEST</a>
                     <div class="p-2"><b>${{ game.price }}</b></div>
                 </div>
                 <div>
