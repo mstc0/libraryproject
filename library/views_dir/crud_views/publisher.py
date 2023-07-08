@@ -18,11 +18,11 @@ class PublisherUpdateView(UpdateView):
     model = models.Publisher
     template_name = 'crud/publisher/publisher-update.html'
     fields = '__all__'
-    success_url = reverse_lazy('manage')
+    success_url = reverse_lazy('admin-panel')
 
 
 class PublisherDeleteView(DeleteView):
     model = models.Publisher
     template_name = 'crud/publisher/publisher-delete.html'
     fields = '__all__'
-    success_url = reverse_lazy('manage')
+    success_url = reverse_lazy('admin-panel')

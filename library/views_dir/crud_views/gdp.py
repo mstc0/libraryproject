@@ -26,27 +26,27 @@ class GameDeveloperUpdateView(UpdateView):
     model = models.GameDeveloper
     template_name = 'crud/gamedeveloperpublisher/gamedeveloper-update.html'
     fields = '__all__'
-    success_url = reverse_lazy('manage')
+    success_url = reverse_lazy('admin-panel')
 
 
 class GameDeveloperDeleteView(DeleteView):
     model = models.GameDeveloper
     template_name = 'crud/gamedeveloperpublisher/gamedeveloper-delete.html'
     fields = '__all__'
-    success_url = reverse_lazy('manage')
+    success_url = reverse_lazy('admin-panel')
 
 
 class GamePublisherUpdateView(UpdateView):
     model = models.GamePublisher
     template_name = 'crud/gamedeveloperpublisher/gamepublisher-update.html'
     fields = '__all__'
-    success_url = reverse_lazy('manage')
+    success_url = reverse_lazy('admin-panel')
 
 
 class GamePublisherDeleteView(DeleteView):
     model = models.GamePublisher
     template_name = 'crud/gamedeveloperpublisher/gamepublisher-delete.html'
     fields = '__all__'
-    success_url = reverse_lazy('manage')
+    success_url = reverse_lazy('admin-panel')
 
 

@@ -35,11 +35,11 @@ class GameUpdateView(UpdateView):
     model = models.Game
     template_name = 'crud/game/game-update.html'
     fields = '__all__'
-    success_url = reverse_lazy('manage')
+    success_url = reverse_lazy('admin-panel')
 
 
 class GameDeleteView(DeleteView):
     model = models.Game
     template_name = 'crud/game/game-delete.html'
     fields = '__all__'
-    success_url = reverse_lazy('game-read')
+    success_url = reverse_lazy('admin-panel')

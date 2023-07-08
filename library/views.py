@@ -8,6 +8,8 @@ from .cart import Cart
 
 
 def test(req):
+    cart = Cart(req)
+    cart.clear()
     return render(req, template_name='test.html')
 
 
@@ -49,6 +51,12 @@ class ProfileEmailUpdateView(UpdateView):
 
 class AdminPanel(TemplateView):
     template_name = 'adminpanel.html'
+    extra_context = {
+        'games': models.Game.objects.all(),
+        'genres': models.Genre.objects.all(),
+        'developers': models.Developer.objects.all(),
+        'publishers': models.Publisher.objects.all(),
+    }
 
 
 def cart_add(request, game_id):

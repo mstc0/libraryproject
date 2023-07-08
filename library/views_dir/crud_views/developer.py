@@ -18,11 +18,11 @@ class DeveloperUpdateView(UpdateView):
     model = models.Developer
     template_name = 'crud/developer/developer-update.html'
     fields = '__all__'
-    success_url = reverse_lazy('manage')
+    success_url = reverse_lazy('admin-panel')
 
 
 class DeveloperDeleteView(DeleteView):
     model = models.Developer
     template_name = 'crud/developer/developer-delete.html'
     fields = '__all__'
-    success_url = reverse_lazy('manage')
+    success_url = reverse_lazy('admin-panel')

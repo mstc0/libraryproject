@@ -18,11 +18,11 @@ class GenreUpdateView(UpdateView):
     model = models.Genre
     template_name = 'crud/genre/genre-update.html'
     fields = '__all__'
-    success_url = reverse_lazy('manage')
+    success_url = reverse_lazy('admin-panel')
 
 
 class GenreDeleteView(DeleteView):
     model = models.Genre
     template_name = 'crud/genre/genre-delete.html'
     fields = '__all__'
-    success_url = reverse_lazy('manage')
+    success_url = reverse_lazy('admin-panel')

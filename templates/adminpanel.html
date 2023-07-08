@@ -2,35 +2,275 @@
 {% block title %}Admin Panel{% endblock %}
 {% load static %}
 {% block extra_css %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link rel="stylesheet" href="{% static '/css/dm.css' %}"/>
 {% endblock %}
 {% block content %}
-    <div class="p-3 d-flex">
-        <div class="flex-fill text-center py-3">
-            <p>GAMES</p>
+    <div class="p-3">
+        <div id="games" class="flex-fill text-center py-3">
+            <div class="d-flex justify-content-between mx-5">
+                <h3>GAMES</h3>
+                <a href="{% url 'game-create' %}">
+                    <button type="button" class="btn btn-success">Add New</button>
+                </a>
+            </div>
             <div class="border border-secondary p-3 my-3 mx-3" style="height: 400px; overflow-y: scroll">
-                games go here
+                <div class="bg-dark mt-3 p-3">
+                    <div class="w-25 d-flex align-items-center pt-3">
+                        <input class="form-control bg-dark text-white ms-3" id="myInput-games" type="text"
+                               placeholder="Search..">
+                    </div>
+                </div>
+
+                <table id='table-games'
+                       data-toggle="table"
+                       data-search="true"
+                       data-filter-control="true"
+                       class="table table-dark table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Release Date</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="myTable-games">
+                    {% for game in games %}
+                        <tr style="transform: rotate(0);">
+                            <td style="vertical-align: middle">
+                                <a href="{% url 'game-read-detail' game.id %}"
+                                   class="link-light link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                    {{ game.title }}
+                                </a>
+                            </td>
+                            <td style="vertical-align: middle">
+                                {% for genre in game.genre.all %}
+                                    {% if game.genre.last == genre %}
+                                        {{ genre.name }}
+                                    {% else %}
+                                        {{ genre.name }},
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td style="vertical-align: middle">{{ game.price }}</td>
+                            <td style="vertical-align: middle">{{ game.release|date }}</td>
+                            <td style="vertical-align: middle">
+                                <a href="{% url 'game-update' game.id %}"
+                                   class="link-light link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                    Edit
+                                </a>
+                                <a href="{% url 'game-delete' game.id %}"
+                                   class="link-light link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                    Remove
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="5" class="p-4"></td>
+                    </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
-        <div class="flex-fill text-center py-3">
-            GENRES
-            <div class="border border-secondary p-3 my-3 mx-3" style="height: 400px; overflow-y: scroll">
-                friends go here
+        <div id="genres" class="flex-fill text-center py-3">
+            <div class="flex-fill text-center py-3">
+                <div class="d-flex justify-content-between mx-5">
+                    <h3>GENRES</h3>
+                    <a href="{% url 'genre-create' %}">
+                        <button type="button" class="btn btn-success">Add New</button>
+                    </a>
+                </div>
+                <div class="border border-secondary p-3 my-3 mx-3" style="height: 400px; overflow-y: scroll">
+                    <div class="bg-dark mt-3 p-3">
+                        <div class="w-25 d-flex align-items-center pt-3">
+                            <input class="form-control bg-dark text-white ms-3" id="myInput-genres" type="text"
+                                   placeholder="Search..">
+                        </div>
+                    </div>
+
+                    <table id='table-genres'
+                           data-toggle="table"
+                           data-search="true"
+                           data-filter-control="true"
+                           class="table table-dark table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody id="myTable-genres">
+                        {% for genre in genres %}
+                            <td style="vertical-align: middle">{{ genre.name }}</td>
+                            <td style="vertical-align: middle">
+                                <a href="{% url 'genre-update' genre.id %}"
+                                   class="link-light link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                    Edit
+                                </a>
+                                <a href="{% url 'genre-delete' genre.id %}"
+                                   class="link-light link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                    Remove
+                                </a>
+                            </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5" class="p-4"></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="p-3 d-flex">
-        <div class="flex-fill text-center py-3">
-            <p>DEVELOPERS</p>
-            <div class="border border-secondary p-3 my-3 mx-3" style="height: 400px; overflow-y: scroll">
-                games go here
+        <div id="developers" class="flex-fill text-center py-3">
+            <div class="flex-fill text-center py-3">
+                <div class="d-flex justify-content-between mx-5">
+                    <h3>DEVELOPERS</h3>
+                    <a href="{% url 'developer-create' %}">
+                        <button type="button" class="btn btn-success">Add New</button>
+                    </a>
+                </div>
+                <div class="border border-secondary p-3 my-3 mx-3" style="height: 400px; overflow-y: scroll">
+                    <div class="bg-dark mt-3 p-3">
+                        <div class="w-25 d-flex align-items-center pt-3">
+                            <input class="form-control bg-dark text-white ms-3" id="myInput-developers" type="text"
+                                   placeholder="Search..">
+                        </div>
+                    </div>
+
+                    <table id='table-developers'
+                           data-toggle="table"
+                           data-search="true"
+                           data-filter-control="true"
+                           class="table table-dark table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody id="myTable-developers">
+                        {% for developer in developers %}
+                            <td style="vertical-align: middle">{{ developer.name }}</td>
+                            <td style="vertical-align: middle">
+                                <a href="{% url 'developer-update' developer.id %}"
+                                   class="link-light link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                    Edit
+                                </a>
+                                <a href="{% url 'developer-delete' developer.id %}"
+                                   class="link-light link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                    Remove
+                                </a>
+                            </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5" class="p-4"></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
-        <div class="flex-fill text-center py-3">
-            PUBLISHERS
-            <div class="border border-secondary p-3 my-3 mx-3" style="height: 400px; overflow-y: scroll">
-                friends go here
+        <div id="publishers" class="flex-fill text-center py-3">
+            <div class="flex-fill text-center py-3">
+                <div class="d-flex justify-content-between mx-5">
+                    <h3>PUBLISHERS</h3>
+                    <a href="{% url 'publisher-create' %}">
+                        <button type="button" class="btn btn-success">Add New</button>
+                    </a>
+                </div>
+                <div class="border border-secondary p-3 my-3 mx-3" style="height: 400px; overflow-y: scroll">
+                    <div class="bg-dark mt-3 p-3">
+                        <div class="w-25 d-flex align-items-center pt-3">
+                            <input class="form-control bg-dark text-white ms-3" id="myInput-publishers" type="text"
+                                   placeholder="Search..">
+                        </div>
+                    </div>
+
+                    <table id='table-publishers'
+                           data-toggle="table"
+                           data-search="true"
+                           data-filter-control="true"
+                           class="table table-dark table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody id="myTable-publishers">
+                        {% for publisher in publishers %}
+                            <td style="vertical-align: middle">{{ publisher.name }}</td>
+                            <td style="vertical-align: middle">
+                                <a href="{% url 'publisher-update' publisher.id %}"
+                                   class="link-light link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                    Edit
+                                </a>
+                                <a href="{% url 'publisher-delete' publisher.id %}"
+                                   class="link-light link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                    Remove
+                                </a>
+                            </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5" class="p-4"></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+        <script>
+        $(document).ready(function () {
+            $("#myInput-games").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable-games tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        </script>
+        <script>
+        $(document).ready(function () {
+            $("#myInput-genres").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable-genres tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        </script>
+        <script>
+        $(document).ready(function () {
+            $("#myInput-developers").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable-developers tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        </script>
+        <script>
+        $(document).ready(function () {
+            $("#myInput-publishers").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable-publishers tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        </script>
 {% endblock %}

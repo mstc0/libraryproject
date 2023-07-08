@@ -18,11 +18,11 @@ class GameGenreUpdateView(UpdateView):
     model = models.GameGenre
     template_name = 'crud/gamegenre/gamegenre-update.html'
     fields = '__all__'
-    success_url = reverse_lazy('manage')
+    success_url = reverse_lazy('admin-panel')
 
 
 class GameGenreDeleteView(DeleteView):
     model = models.GameGenre
     template_name = 'crud/gamegenre/gamegenre-delete.html'
     fields = '__all__'
-    success_url = reverse_lazy('manage')
+    success_url = reverse_lazy('admin-panel')
