@@ -22,7 +22,7 @@ from library.views_dir.crud_views import game, genre, gamegenre, gdp, publisher,
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include("django.contrib.auth.urls")),
-    path('accounts/profile', views.profile, name='profile'),
+    path('accounts/profile/<int:pk>', views.ProfileView.as_view(), name='profile'),
     path('accounts/profile/update/email', views.ProfileEmailUpdateView.as_view(), name='profile-email-update'),
     path('accounts/profile/update/display', views.ProfileDisplayUpdateView.as_view(), name='profile-display-update'),
     path('accounts/register/', views.RegisterCreateView.as_view(), name='register'),
@@ -33,6 +33,7 @@ urlpatterns = [
     path('cart', views.cart_detail, name='cart'),
     path('cart/add/<int:game_id>', views.cart_add, name='cart-add'),
     path('cart/remove/<int:game_id>', views.cart_remove, name='cart-remove'),
+    path('cart/purchase', views.cart_purchase, name='cart-purchase'),
     # -- GAME --
     path('manage/game/create', game.GameCreateView.as_view(), name='game-create'),
     path('manage/game/update/<pk>', game.GameUpdateView.as_view(), name='game-update'),

@@ -47,7 +47,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
                                     aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="{% url 'profile' %}">My Profile</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'profile' user.id %}">My Profile</a></li>
                                     <li><a class="dropdown-item" href="#">Messages<span
                                             class="badge text-bg-secondary ms-3">4</span> </a></li>
                                     <li><a class="dropdown-item" href="#">Events</a></li>

@@ -4,7 +4,9 @@
     <div class="text-center bg-dark p-2 mt-2">
         <h3>Games in cart: {{ cart|length }}</h3>
         <h3>Total value: ${{ cart.get_total_price }}</h3>
-        <button type="button" href="#" class="btn btn-success"><b>Pay For All</b></button>
+        <a href="{% url 'cart-purchase' %}">
+            <button type="button" class="btn btn-success"><b>Pay For All</b></button>
+        </a>
     </div>
     <table id='table' class="table table-dark table-hover mx-auto">
         <thead>

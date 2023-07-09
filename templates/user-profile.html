@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+
+    <div class="d-flex">
+        <div class="border border-4 overflow-hidden border-secondary rounded d-flex mx-3"
+             style="width: 256px; height: 256px">
+            <img src="https://ia903204.us.archive.org/4/items/discordprofilepictures/discordblue.png">
+        </div>
+        <div class="d-flex mx-5 align-items-center">
+            <table class="table table-dark table-borderless" style="horiz-align: left">
+                <tbody>
+                <tr>
+                    <th class="text-end" scope="row">Display Name:</th>
+                    <td colspan="2">{{ profile.display_name }}</td>
+                </tr>
+                <tr>
+                    <th class="text-end" scope="row">Joined:</th>
+                    <td colspan="2">{{ profile.user.date_joined|date }}</td>
+                </tr>
+                <tr>
+                    <th class="text-end" scope="row">Last Login:</th>
+                    <td colspan="2">{{ profile.user.last_login }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="p-3 d-flex">
+        <div class="border-top border-secondary flex-fill text-center py-3">
+            <p>SMALL GAME LIST</p>
+            <div class="border p-3 my-3 mx-3">
+                games go here
+            </div>
+        </div>
+        <div class="border-top border-secondary flex-fill text-center py-3">
+            FRIEND LIST HERE
+            <div class="border p-3 my-3 mx-3">
+                friends go here
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
