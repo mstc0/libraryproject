@@ -1,5 +1,3 @@
-import os
-
 from django import forms
 from library import models
 from django.db.transaction import atomic
