@@ -1,3 +1,11 @@
 :root {
   color-scheme: dark;
 }
+
+#to-show {
+  display: none;
+}
+
+#to-hover:hover > #to-show {
+  display: block;
+}

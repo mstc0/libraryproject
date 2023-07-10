@@ -36,25 +36,6 @@ class RegisterCreateView(CreateView):
     form_class = forms.SignUpForm
     template_name = 'registration/register.html'
 
-
-class ProfileDisplayUpdateView(UpdateView):
-    template_name = 'crud/profile/display-update.html'
-    fields = ('display_name',)
-    success_url = reverse_lazy('profile')
-
-    def get_object(self):
-        return models.UserExtraProfile.objects.get(user_id=self.request.user.id)
-
-
-class ProfileEmailUpdateView(UpdateView):
-    template_name = 'crud/profile/email-update.html'
-    fields = ('email',)
-    success_url = reverse_lazy('profile')
-
-    def get_object(self):
-        return self.request.user
-
-
 class AdminPanel(TemplateView):
     template_name = 'adminpanel.html'
     extra_context = {

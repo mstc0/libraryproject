@@ -7,9 +7,21 @@
 {% endblock %}
 {% block content %}
     <div class="d-flex">
-        <div class="border border-4 overflow-hidden border-secondary rounded d-flex mx-3"
+        <div id="to-hover" class="border border-4 overflow-hidden border-secondary rounded d-flex mx-3"
              style="width: 256px; height: 256px">
-            <img src="https://ia903204.us.archive.org/4/items/discordprofilepictures/discordblue.png">
+            <div id="to-show" class="position-absolute mx-2 my-2">
+                <a href="{% url 'profile-avatar-update' %}">
+                    <button type="button" class="btn btn-success btn-sm px-2">🖉</button>
+                </a>
+                <a href="{% url 'profile-avatar-delete' %}">
+                    <button type="button" class="btn btn-danger btn-sm px-2">×</button>
+                </a>
+            </div>
+            {% if not profile.avatar %}
+                <img id="to-hover" class="img-fluid" src="{% static 'avatars/default-profile.png' %}">
+            {% else %}
+                <img id="to-hover" class="img-fluid" src="{% static profile.avatar|cut:'library/static/' %}">
+            {% endif %}
         </div>
         <div class="d-flex mx-5 align-items-center">
             <table class="table table-dark table-borderless" style="horiz-align: left">

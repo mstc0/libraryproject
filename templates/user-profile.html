@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
-{% block title %}My Profile{% endblock %}
+{% block title %}{{ profile.display_name }} Profile{% endblock %}
 {% block content %}
+{% load static %}
 
     <div class="d-flex">
         <div class="border border-4 overflow-hidden border-secondary rounded d-flex mx-3"
              style="width: 256px; height: 256px">
-            <img src="https://ia903204.us.archive.org/4/items/discordprofilepictures/discordblue.png">
+            {% if not profile.avatar %}
+                <img id="to-hover" class="img-fluid" src="{% static 'avatars/default-profile.png' %}">
+            {% else %}
+                <img id="to-hover" class="img-fluid" src="{% static profile.avatar|cut:'library/static/' %}">
+            {% endif %}
         </div>
         <div class="d-flex mx-5 align-items-center">
             <table class="table table-dark table-borderless" style="horiz-align: left">

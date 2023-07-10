@@ -17,14 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from library import views
-from library.views_dir.crud_views import game, genre, gamegenre, gdp, publisher, developer
+from library.views_dir.crud_views import game, genre, gamegenre, gdp, publisher, developer, profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include("django.contrib.auth.urls")),
     path('accounts/profile/<int:pk>', views.ProfileView.as_view(), name='profile'),
-    path('accounts/profile/update/email', views.ProfileEmailUpdateView.as_view(), name='profile-email-update'),
-    path('accounts/profile/update/display', views.ProfileDisplayUpdateView.as_view(), name='profile-display-update'),
+    path('accounts/profile/update/email', profile.ProfileEmailUpdateView.as_view(), name='profile-email-update'),
+    path('accounts/profile/update/display', profile.ProfileDisplayUpdateView.as_view(), name='profile-display-update'),
+    path('accounts/profile/update/avatar', profile.ProfileAvatarUpdateView.as_view(), name='profile-avatar-update'),
+    path('accounts/profile/delete/avatar', profile.delete_avatar, name='profile-avatar-delete'),
     path('accounts/register/', views.RegisterCreateView.as_view(), name='register'),
     path('accounts/logout/', views.CustomLogoutView.as_view(), name='logout'),
     path('manage/admin', views.AdminPanel.as_view(), name='admin-panel'),

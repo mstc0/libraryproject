@@ -10,6 +10,7 @@ class UserExtraProfile(models.Model):
     display_name = models.CharField(max_length=35, unique=True, validators=[MinLengthValidator(3)])
     owned_games = models.ManyToManyField('Game', through='UserOwnedGames', blank=True, related_name='owned')
     wish_list = models.ManyToManyField('Game', through='UserWishlist', blank=True, related_name='wished')
+    avatar = models.ImageField(upload_to='library/static/avatars/', default=None, null=True)
 
     def __str__(self):
         return f'{self.display_name}'
