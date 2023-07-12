@@ -69,7 +69,8 @@
     <div class="p-3 d-flex">
         <div class="border-top border-secondary flex-fill text-center py-3 w-50">
             <h3>My Games</h3>
-            <div class="border p-3 my-3 mx-3 border-secondary" style="max-height: 400px; overflow-y: scroll">
+            <div class="border p-3 my-3 mx-3 border-secondary"
+                 style="height: 400px; max-height: 400px; overflow-y: scroll">
                 <table id='table-publishers'
                        data-toggle="table"
                        data-search="true"
@@ -77,8 +78,15 @@
                        class="table table-dark table-hover">
                     <tbody id="myTable-publishers">
                     {% for game in games %}
-                        <td style="vertical-align: middle">#</td>
-                        <td style="vertical-align: middle">{{ game.game.title }}</td>
+                        <tr style="transform: rotate(0)">
+                            <td style="vertical-align: middle;">
+                                <a href="{% url 'game-read-detail' game.game.id %}"
+                                   class="stretched-link link-light link-underline-opacity-0">{{ game.game.title }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <td style="vertical-align: middle">No owned games yet</td>
                     {% endfor %}
                     </tbody>
                 </table>
@@ -86,9 +94,136 @@
         </div>
         <div class="border-top border-secondary flex-fill text-center py-3 w-50">
             <h3>My Friends</h3>
-            <div class="border p-3 my-3 mx-3 border-secondary" style="max-height: 400px; overflow-y: scroll">
-                friends go here
+            <div class="border p-3 my-3 mx-3 border-secondary"
+                 style="height: 400px; max-height: 400px; overflow-y: scroll">
+                <div class="btn-group pb-3" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="btnradio" id="friends" autocomplete="off"
+                           checked>
+                    <label class="btn btn-outline-secondary" for="friends">Friend List</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="requests-received" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="requests-received">Received</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="requests-sent" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="requests-sent">Sent</label>
+                </div>
+                <table id="myTable-requests-received" class="table table-dark table-hover" style="display: none">
+                    <tbody id="myTable">
+                    {% for request in friend_requests_received %}
+                        <tr>
+                            <td style="vertical-align: middle">{{ request }}</td>
+                            <td style="vertical-align: middle">{{ request.timestamp|date }}</td>
+                            <td style="vertical-align: middle">
+                                <div class="d-flex">
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-success mx-1" name="accept"
+                                                value="{{ request.sender.id }}" style="--bs-btn-padding-y: .1rem;
+                                                --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
+                                        ">
+                                            ✓
+                                        </button>
+                                    </form>
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger mx-1" name="decline"
+                                                value="{{ request.sender.id }}" style="--bs-btn-padding-y: .1rem;
+                                                --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
+                                        ">
+                                            ✕
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <td style="vertical-align: middle">No active requests</td>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <table id="myTable-requests-sent" class="table table-dark table-hover" style="display: none">
+                    <tbody id="myTable">
+                    {% for request in friend_requests_sent %}
+                        <tr>
+                            <td style="vertical-align: middle">{{ request.receiver }}</td>
+                            <td style="vertical-align: middle">{{ request.timestamp|date }}</td>
+                            <td style="vertical-align: middle">
+                                <div class="d-flex">
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger mx-1" name="cancel"
+                                                value="{{ request.receiver.id }}" style="--bs-btn-padding-y: .1rem;
+                                                --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
+                                        ">
+                                            ✕
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <td style="vertical-align: middle">No active requests</td>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <table id='myTable-friends'
+                       data-toggle="table"
+                       data-search="true"
+                       data-filter-control="true"
+                       class="table table-dark table-hover">
+                    <tbody id="myTable">
+                    {% for friend in friendlist %}
+                        <tr style="transform: rotate(0)">
+                            <th scope="row"><a href="{% url 'profile' friend.user.id %}" class="stretched-link"></a>
+                            </th>
+                            <td>
+                                <div class="d-flex justify-content-start mx-5" style="">
+                                    {% if friend.avatar %}
+                                        <a href="#" class="stretched-link">
+                                        <img class="border border-secondary rounded"
+                                             src="{% static friend.avatar|cut:'library/static/' %}"
+                                             style="width: 40px; height: 40px">
+                                    {% else %}
+                                        <img class="border border-secondary rounded"
+                                             src="{% static 'avatars/default-profile.png' %}"
+                                             style="width: 40px; height: 40px">
+                                    {% endif %}
+                                    <div class="ms-4"
+                                         style="display: flex; align-items: center; justify-content: center">
+                                        <b>{{ friend }}</b>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td style="vertical-align: middle">No added friends yet</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+    <script>
+        $("#requests-sent").click(function () {
+            $("#myTable-requests-received").hide();
+            $("#myTable-friends").hide();
+            $("#myTable-requests-sent").show();
+        })
+    </script>
+    <script>
+        $("#requests-received").click(function () {
+            $("#myTable-requests-sent").hide();
+            $("#myTable-friends").hide();
+            $("#myTable-requests-received").show();
+        })
+    </script>
+    <script>
+        $("#friends").click(function () {
+            $("#myTable-requests-sent").hide();
+            $("#myTable-requests-received").hide();
+            $("#myTable-friends").show();
+        })
+    </script>
 {% endblock %}

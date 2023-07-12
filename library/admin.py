@@ -15,5 +15,4 @@ admin.site.register(models.GameDeveloper)
 admin.site.register(models.GamePublisher)
 admin.site.register(models.UserOwnedGames)
 admin.site.register(models.UserWishlist)
-
-
+admin.site.register(models.FriendRequest)

@@ -10,7 +10,30 @@ class UserExtraProfile(models.Model):
     display_name = models.CharField(max_length=35, unique=True, validators=[MinLengthValidator(3)])
     owned_games = models.ManyToManyField('Game', through='UserOwnedGames', blank=True, related_name='owned')
     wish_list = models.ManyToManyField('Game', through='UserWishlist', blank=True, related_name='wished')
-    avatar = models.ImageField(upload_to='library/static/avatars/', default=None, null=True)
+    avatar = models.ImageField(upload_to='library/static/avatars/', default=None, null=True, blank=True)
+    friends = models.ManyToManyField('self', blank=True, related_name='friends')
+
+    def add_friend(self, target):
+        if target not in self.friends.all():
+            self.friends.add(target)
+            self.save()
+
+    def remove_friend(self, target):
+        if target in self.friends.all():
+            self.friends.remove(target)
+            self.save()
+
+    def unfriend(self, target):
+        # removing friend from self list
+        remover_friend_list = self
+        remover_friend_list.remove_friend(target)
+        # removing friend from target list
+        target_friend_list = self.objects.get(user=target)
+        target_friend_list.remove_friend(self)
+        self.save()
+
+    def is_mutual(self, target):
+        return target in self.friends.all()
 
     def __str__(self):
         return f'{self.display_name}'
@@ -83,3 +106,30 @@ class UserWishlist(models.Model):
     user = models.ForeignKey(UserExtraProfile, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE, unique=True)
     acquire_date = models.DateField()
+
+
+class FriendRequest(models.Model):
+    sender = models.ForeignKey(UserExtraProfile, on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(UserExtraProfile, on_delete=models.CASCADE, related_name='receiver')
+    is_active = models.BooleanField(blank=True, null=False, default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.sender.display_name
+
+    def accept(self):
+        if self.receiver:
+            self.receiver.add_friend(self.sender)
+            if self.sender:
+                self.sender.add_friend(self.receiver)
+                self.is_active = False
+                self.save()
+
+    def decline(self):
+        # receiver declining
+        self.is_active = False
+        self.save()
+
+    def cancel(self):
+        # sender cancels request
+        self.is_active = False
+        self.save()

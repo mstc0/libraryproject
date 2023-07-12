@@ -15,18 +15,6 @@ def test(req):
     return render(req, template_name='test.html')
 
 
-class ProfileView(View):
-    def get(self, req, pk):
-        if req.user.id is pk:
-            my_profile = models.UserExtraProfile.objects.get(user=req.user)
-            games = models.UserOwnedGames.objects.all().filter(user=my_profile)
-            return render(req, template_name='my-profile.html', context={'profile': my_profile, 'games': games})
-        else:
-            user = models.User.objects.get(id=pk)
-            user_profile = models.UserExtraProfile.objects.get(user=user)
-            return render(req, template_name='user-profile.html', context={'profile': user_profile})
-
-
 class CustomLogoutView(LogoutView):
     template_name = 'registration/logged_out.html'
 

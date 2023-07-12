@@ -8,18 +8,24 @@
              style="overflow: hidden; height: 400px; background-image: url('https://i.imgur.com/I3DIwEF.jpeg'); background-position: center">
             <div class="border-top border-secondary p-3 bg-dark mt-5 flex-fill text-center d-flex justify-content-between">
                 <div class="d-flex bg-black border rounded border-black mx-5">
-                    <button type="button" href="{% url 'cart-add' game.id %}" class="btn btn-success">Add to Cart</button>
-                    <a href="{% url 'cart-add' game.id %}">TEST</a>
+                    {% if not game.id|slugify in cart %}
+                        <a href="{% url 'cart-add' game.id %}">
+                            <button type="button" class="btn btn-success">Add to Cart</button>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'cart' %}">
+                            <button type="button" class="btn btn-secondary">Already in Cart</button>
+                        </a>
+                    {% endif %}
                     <div class="p-2"><b>${{ game.price }}</b></div>
                 </div>
                 <div>
                     <form method="post">
                         {% csrf_token %}
-{#                        <input type="hidden" value="{{ game.pk }}" name="game">#}
-                        <button type="submit" class="btn btn-success border border-black rounded mx-5">Add to Wishlist</button>
+                        <button type="submit" class="btn btn-success border border-black rounded mx-5">Add to Wishlist
+                        </button>
                     </form>
                 </div>
-{#                <button type="button" class="btn btn-success border border-black rounded mx-5">Add to Wishlist</button>#}
             </div>
         </div>
     </div>
