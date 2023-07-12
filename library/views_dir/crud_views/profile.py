@@ -22,9 +22,14 @@ class ProfileView(View):
                                    'friend_requests_sent': requests_sent
                                    })
         else:
+            my_profile = models.UserExtraProfile.objects.get(user=req.user)
             user = models.User.objects.get(id=pk)
             user_profile = models.UserExtraProfile.objects.get(user=user)
-            return render(req, template_name='user-profile.html', context={'profile': user_profile})
+            friend_requests = models.FriendRequest.objects.all()
+            is_requested = friend_requests.filter(sender=my_profile, receiver=user_profile, is_active=True)
+            print(bool(is_requested))
+            print(friend_requests)
+            return render(req, template_name='user-profile.html', context={'profile': user_profile, 'is_requested': is_requested})
 
     def post(self, request, pk):
         if 'accept' in request.POST:
@@ -36,13 +41,13 @@ class ProfileView(View):
             sender[0].decline()
             return redirect('profile', pk=request.user.id)
         elif 'cancel' in request.POST:
-            print(request.POST['cancel'])
-            print(request.POST['cancel'])
-            print(request.POST['cancel'])
-            print(request.POST['cancel'])
             receiver = models.FriendRequest.objects.all().filter(receiver=request.POST['cancel'])
             receiver[0].cancel()
             return redirect('profile', pk=request.user.id)
+        elif 'cancel2' in request.POST:
+            receiver = models.FriendRequest.objects.all().filter(receiver=request.POST['cancel2'])
+            receiver[0].cancel()
+            return redirect('profile', pk=receiver[0].receiver.user.id)
 
 
 
@@ -98,10 +103,7 @@ def request_friendship(request, pk):
     user_profile = models.UserExtraProfile.objects.get(user_id=request.user.id)
     target_profile = models.UserExtraProfile.objects.get(user_id=pk)
     friend_request, _ = models.FriendRequest.objects.get_or_create(sender=user_profile, receiver=target_profile)
-    if not _ and not friend_request.is_active:
-        friend_request.save()
-    else:
-        friend_request.is_active = True
-        friend_request.save()
+    friend_request.is_active = True
+    friend_request.save()
     return redirect(reverse_lazy('profile', kwargs={'pk': pk}))
 
