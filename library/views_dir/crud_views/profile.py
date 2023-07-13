@@ -19,7 +19,7 @@ class ProfileView(View):
                                    'games': games,
                                    'friend_requests_received': requests_received,
                                    'friendlist': friendlist,
-                                   'friend_requests_sent': requests_sent
+                                   'friend_requests_sent': requests_sent,
                                    })
         else:
             my_profile = models.UserExtraProfile.objects.get(user=req.user)
@@ -27,9 +27,10 @@ class ProfileView(View):
             user_profile = models.UserExtraProfile.objects.get(user=user)
             friend_requests = models.FriendRequest.objects.all()
             is_requested = friend_requests.filter(sender=my_profile, receiver=user_profile, is_active=True)
-            print(bool(is_requested))
-            print(friend_requests)
-            return render(req, template_name='user-profile.html', context={'profile': user_profile, 'is_requested': is_requested})
+            return render(req, template_name='user-profile.html',
+                          context={'profile': user_profile,
+                                   'is_requested': is_requested,
+                                   'my_profile': my_profile})
 
     def post(self, request, pk):
         if 'accept' in request.POST:

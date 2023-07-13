@@ -31,12 +31,19 @@
                     <th></th>
                 </tr>
                 <tr>
-                    {% if not is_requested %}
+                    {% if profile in my_profile.friends.all %}
+                        <th class="text-end" scope="row">
+                                <button type="button" class="btn btn-success" style="--bs-btn-padding-y: .1rem;
+                                                --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
+                                        " disabled>Added as Friend</button>
+                        </th>
+                    {% elif not is_requested %}
                         <th class="text-end" scope="row">
                             <a href="{% url 'profile-add-friend' profile.user.id %}">
                                 <button type="button" class="btn btn-success" style="--bs-btn-padding-y: .1rem;
                                                 --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
-                                        ">Invite to Friends</button>
+                                        ">Invite to Friends
+                                </button>
                             </a>
                         </th>
                     {% else %}

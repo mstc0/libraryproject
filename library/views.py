@@ -62,3 +62,21 @@ def cart_purchase(request):
         p.save()
     cart.clear()
     return redirect(reverse_lazy('cart'))
+
+
+class ReviewCreateView(CreateView):
+    model = models.Review
+    fields = ('is_positive', 'review_content',)
+    template_name = 'crud/game/game-create-review.html'
+
+    def form_valid(self, form):
+        user = models.UserExtraProfile.objects.get(user=self.request.user)
+        game = models.Game.objects.get(pk=self.kwargs['pk'])
+        self.object = form.save(commit=False)
+        self.object.user = user
+        self.object.game = game
+        self.object.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('game-read-detail', kwargs={'pk': self.kwargs['pk']})

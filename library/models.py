@@ -98,14 +98,20 @@ class GamePublisher(models.Model):
 
 class UserOwnedGames(models.Model):
     user = models.ForeignKey(UserExtraProfile, on_delete=models.CASCADE)
-    game = models.ForeignKey(Game, on_delete=models.CASCADE, unique=True)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
     acquire_date = models.DateField()
+
+    class Meta:
+        unique_together = ('user', 'game')
 
 
 class UserWishlist(models.Model):
     user = models.ForeignKey(UserExtraProfile, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE, unique=True)
     acquire_date = models.DateField()
+
+    class Meta:
+        unique_together = ('user', 'game')
 
 
 class FriendRequest(models.Model):
@@ -133,3 +139,14 @@ class FriendRequest(models.Model):
         # sender cancels request
         self.is_active = False
         self.save()
+
+
+class Review(models.Model):
+    user = models.ForeignKey(UserExtraProfile, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    is_positive = models.BooleanField()
+    review_content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'game')

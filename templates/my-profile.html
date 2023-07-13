@@ -204,6 +204,9 @@
             </div>
         </div>
     </div>
+    {% for x in reviews %}
+        {{ x }}
+    {% endfor %}
     <script>
         $("#requests-sent").click(function () {
             $("#myTable-requests-received").hide();

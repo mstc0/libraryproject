@@ -43,6 +43,7 @@ urlpatterns = [
     path('manage/game/delete/<pk>', game.GameDeleteView.as_view(), name='game-delete'),
     path('view/game', game.GameListView.as_view(), name='game-read'),
     path('view/game/<int:pk>', game.GameDetailView.as_view(), name='game-read-detail'),
+    path('view/game/<int:pk>/addreview', views.ReviewCreateView.as_view(), name='game-add-review'),
     # -- GENRE --
     path('manage/genre/create', genre.GenreCreateView.as_view(), name='genre-create'),
     path('manage/genre/update/<pk>', genre.GenreUpdateView.as_view(), name='genre-update'),
