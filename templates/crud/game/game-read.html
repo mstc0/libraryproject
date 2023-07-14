@@ -32,12 +32,15 @@
         {% for game in object_list %}
             <tr style="transform: rotate(0);">
                 <th scope="row" class="d-flex justify-content-center">
-                    <div class="border rounded" style="width: 50px; height: 50px; overflow: hidden">
                         <a href="{% url 'game-read-detail' game.id %}" class="stretched-link">
-                            <img class="img-fluid"
-                                 src="https://www.gamespot.com/a/uploads/scale_medium/1197/11970954/2345802-2225493-path_of_exile_box.jpg">
+                            {% if game.avatar %}
+                            <img class="border border-secondary rounded" style="width: 50px; height: 50px; overflow: hidden"
+                                 src="{% static game.avatar|cut:'library/static/' %}">
+                            {% else %}
+                                <img class="border border-secondary rounded" style="width: 50px; height: 50px; overflow: hidden"
+                                 src="{% static 'game/avatar/placeholder.png' %}">
+                            {% endif %}
                         </a>
-                    </div>
                 </th>
                 <td style="vertical-align: middle">{{ game.title }}</td>
                 <td style="vertical-align: middle">

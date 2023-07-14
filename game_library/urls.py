@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include("django.contrib.auth.urls")),
     path('accounts/profile/<int:pk>', profile.ProfileView.as_view(), name='profile'),
+    path('accounts/myprofile', profile.my_profile, name='my-profile'),
     path('accounts/profile/update/email', profile.ProfileEmailUpdateView.as_view(), name='profile-email-update'),
     path('accounts/profile/update/display', profile.ProfileDisplayUpdateView.as_view(), name='profile-display-update'),
     path('accounts/profile/update/avatar', profile.ProfileAvatarUpdateView.as_view(), name='profile-avatar-update'),

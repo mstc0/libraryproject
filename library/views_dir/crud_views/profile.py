@@ -108,3 +108,8 @@ def request_friendship(request, pk):
     friend_request.save()
     return redirect(reverse_lazy('profile', kwargs={'pk': pk}))
 
+
+def my_profile(request):
+    profile = models.UserExtraProfile.objects.get(user_id=request.user.id).user.id
+    return redirect('profile', pk=profile)
+

@@ -1,14 +1,15 @@
+import os
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
-from library import models
+from library import models, forms
 
 
 class GameCreateView(CreateView):
     model = models.Game
+    form_class = forms.GameImageForm
     template_name = 'crud/game/game-create.html'
-    fields = '__all__'
     success_url = reverse_lazy('game-create')
 
 
@@ -43,9 +44,17 @@ class GameDetailView(DetailView):
 
 class GameUpdateView(UpdateView):
     model = models.Game
+    form_class = forms.GameImageForm
     template_name = 'crud/game/game-update.html'
-    fields = '__all__'
     success_url = reverse_lazy('admin-panel')
+
+    def form_valid(self, form):
+        game = models.Game.objects.get(pk=self.kwargs['pk'])
+        if game.avatar:
+            os.remove(str(game.avatar))
+        if game.logo:
+            os.remove(str(game.logo))
+        return super(GameUpdateView, self).form_valid(form)
 
 
 class GameDeleteView(DeleteView):

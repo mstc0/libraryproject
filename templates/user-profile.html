@@ -31,6 +31,7 @@
                     <th></th>
                 </tr>
                 <tr>
+                {{ my_profile.friends.all }}
                     {% if profile in my_profile.friends.all %}
                         <th class="text-end" scope="row">
                                 <button type="button" class="btn btn-success" style="--bs-btn-padding-y: .1rem;

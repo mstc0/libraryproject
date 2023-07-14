@@ -56,3 +56,55 @@ class AvatarProfileForm(forms.ModelForm):
             pass
 
         return avatar
+
+
+class GameImageForm(forms.ModelForm):
+    avatar = forms.ImageField(widget=forms.FileInput, required=False)
+    logo = forms.ImageField(widget=forms.FileInput, required=False)
+
+    class Meta:
+        model = models.Game
+        fields = "__all__"
+
+    def clean_logo(self):
+        logo = self.cleaned_data['logo']
+
+        try:
+            w, h = get_image_dimensions(logo)
+            max_w = 800
+            max_h = 500
+            if w > max_w or h > max_h:
+                raise forms.ValidationError(f'Please use image that is {max_w}x{max_h} or smaller')
+
+            main, sub = logo.content_type.split('/')
+            if not (main == 'image' and sub in ['jpeg', 'png']):
+                raise forms.ValidationError(f'Only JPG or PNG are allowed.')
+
+            if len(logo) > (1024 * 1024):
+                raise forms.ValidationError('Logo file size may not exceed 1MB.')
+
+        except AttributeError:
+            pass
+
+        return logo
+
+    def clean_avatar(self):
+        avatar = self.cleaned_data['avatar']
+
+        try:
+            w, h = get_image_dimensions(avatar)
+            max_w = max_h = 100
+            if w > max_w or h > max_h:
+                raise forms.ValidationError(f'Please use image that is {max_w}x{max_h} or smaller')
+
+            main, sub = avatar.content_type.split('/')
+            if not (main == 'image' and sub in ['jpeg', 'png']):
+                raise forms.ValidationError(f'Only JPG or PNG are allowed.')
+
+            if len(avatar) > (40 * 1024):
+                raise forms.ValidationError('Logo file size may not exceed 40k.')
+
+        except:
+            pass
+
+        return avatar

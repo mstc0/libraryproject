@@ -46,6 +46,8 @@ class Game(models.Model):
     developer = models.ManyToManyField('Developer', through='GameDeveloper')
     publisher = models.ManyToManyField('Publisher', through='GamePublisher')
     release = models.DateField()
+    logo = models.ImageField(upload_to='library/static/game/logo/', default=None, null=True, blank=True)
+    avatar = models.ImageField(upload_to='library/static/game/avatar/', default=None, null=True, blank=True)
 
     def __str__(self):
         return f'Game({self.title})'
