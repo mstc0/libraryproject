@@ -1,6 +1,5 @@
 import os
-from datetime import datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 from library import models, forms
