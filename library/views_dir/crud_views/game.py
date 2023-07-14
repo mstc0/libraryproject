@@ -37,8 +37,14 @@ class GameDetailView(DetailView):
     def post(self, request, pk):
         game = models.Game.objects.get(id=pk)
         profile = models.UserExtraProfile.objects.get(user_id=request.user.id)
-        owned = models.UserWishlist(user=profile, acquire_date=datetime.now(), game=game)
-        owned.save()
+        if 'add-wishlist' in request.POST:
+            wishlist, created = models.UserWishlist.objects.get_or_create(user=profile, game=game)
+            if created:
+                wishlist.save()
+        if 'remove-wishlist' in request.POST:
+            wishlist, created = models.UserWishlist.objects.get_or_create(user=profile, game=game)
+            if not created:
+                wishlist.delete()
         return redirect('game-read-detail', pk=pk)
 
 

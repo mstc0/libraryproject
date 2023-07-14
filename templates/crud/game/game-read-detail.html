@@ -30,16 +30,19 @@
                     {% if not game in wish_list %}
                         <form method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-success border border-black rounded mx-5">Add to
-                                Wishlist
+                            <button type="submit" name="add-wishlist"
+                                    class="btn btn-success border border-black rounded mx-5">
+                                Add to Wishlist
                             </button>
                         </form>
                     {% else %}
-                        <a href="#">
-                            <button type="button" class="btn btn-danger border border-black rounded mx-5">Remove from
-                                Wishlist
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="remove-wishlist"
+                                    class="btn btn-danger border border-black rounded mx-5">
+                                Remove from Wishlist
                             </button>
-                        </a>
+                        </form>
                     {% endif %}
                 </div>
             </div>

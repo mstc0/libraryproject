@@ -26,40 +26,54 @@
             <th scope="col">Genre</th>
             <th scope="col">Price</th>
             <th scope="col">Release Date</th>
+            <th scope="col">Remove</th>
         </tr>
         </thead>
         <tbody id="myTable">
-        {% for game in object_list %}
+        {% for game in wishlist %}
             <tr style="transform: rotate(0);">
                 <th scope="row" class="d-flex justify-content-center">
-                        <a href="{% url 'game-read-detail' game.id %}" class="stretched-link">
-                            {% if game.avatar %}
-                            <img class="border border-secondary rounded" style="width: 50px; height: 50px; overflow: hidden"
-                                 src="{% static game.avatar|cut:'library/static/' %}">
-                            {% else %}
-                                <img class="border border-secondary rounded" style="width: 50px; height: 50px; overflow: hidden"
+                    <a href="{% url 'game-read-detail' game.id %}" class="stretched-link">
+                        {% if game.game.avatar %}
+                            <img class="border border-secondary rounded"
+                                 style="width: 50px; height: 50px; overflow: hidden"
+                                 src="{% static game.game.avatar|cut:'library/static/' %}">
+                        {% else %}
+                            <img class="border border-secondary rounded"
+                                 style="width: 50px; height: 50px; overflow: hidden"
                                  src="{% static 'game/avatar/placeholder.png' %}">
-                            {% endif %}
-                        </a>
+                        {% endif %}
+                    </a>
                 </th>
-                <td style="vertical-align: middle">{{ game.title }}</td>
+                <td style="vertical-align: middle">{{ game.game.title }}</td>
                 <td style="vertical-align: middle">
-                    {% for genre in game.genre.all %}
-                        {% if game.genre.last == genre %}
+                    {% for genre in game.game.genre.all %}
+                        {% if game.game.genre.last == genre %}
                             {{ genre.name }}
                         {% else %}
                             {{ genre.name }},
                         {% endif %}
                     {% endfor %}
                 </td>
-                <td style="vertical-align: middle">{{ game.price }}</td>
-                <td style="vertical-align: middle">{{ game.release|date }}</td>
+                <td style="vertical-align: middle">{{ game.game.price }}</td>
+                <td style="vertical-align: middle">{{ game.game.release|date }}</td>
+                <td style="vertical-align: middle">
+                    <div style="z-index: 2; position: relative">
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="remove-wishlist" value="{{ game.game.id }}"
+                                    class="btn btn-danger border border-black rounded">
+                                ×
+                            </button>
+                        </form>
+                    </div>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
         <tfoot>
         <tr>
-            <td colspan="5" class="p-4"></td>
+            <td colspan="6" class="p-4"></td>
         </tr>
         </tfoot>
     </table>

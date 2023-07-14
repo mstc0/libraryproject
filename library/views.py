@@ -3,7 +3,7 @@ import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import LogoutView
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, View, TemplateView
+from django.views.generic import CreateView, TemplateView, ListView
 from library import forms, models
 from .cart import Cart
 # Create your views_dir here.
@@ -80,3 +80,13 @@ class ReviewCreateView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy('game-read-detail', kwargs={'pk': self.kwargs['pk']})
+
+
+def wishlist(request):
+    profile = models.UserExtraProfile.objects.get(user=request.user)
+    wish_list = models.UserWishlist.objects.all().filter(user=profile).all()
+    if 'remove-wishlist' in request.POST:
+        wishlist, created = models.UserWishlist.objects.get_or_create(user=profile, game=request.POST['remove-wishlist'])
+        if not created:
+            wishlist.delete()
+    return render(request, template_name='wish-list.html', context={'wishlist': wish_list})

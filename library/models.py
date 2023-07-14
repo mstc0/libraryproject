@@ -101,16 +101,15 @@ class GamePublisher(models.Model):
 class UserOwnedGames(models.Model):
     user = models.ForeignKey(UserExtraProfile, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
-    acquire_date = models.DateField()
+    acquire_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('user', 'game')
 
-
 class UserWishlist(models.Model):
     user = models.ForeignKey(UserExtraProfile, on_delete=models.CASCADE)
-    game = models.ForeignKey(Game, on_delete=models.CASCADE, unique=True)
-    acquire_date = models.DateField()
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    acquire_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('user', 'game')

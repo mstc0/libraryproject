@@ -32,6 +32,7 @@ urlpatterns = [
     path('accounts/register/', views.RegisterCreateView.as_view(), name='register'),
     path('accounts/logout/', views.CustomLogoutView.as_view(), name='logout'),
     path('manage/admin', views.AdminPanel.as_view(), name='admin-panel'),
+    path('accounts/wishlist', views.wishlist, name='wish-list'),
     path('test', views.test),
     # -- CART --
     path('cart', views.cart_detail, name='cart'),
