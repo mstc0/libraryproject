@@ -151,3 +151,14 @@ class Review(models.Model):
 
     class Meta:
         unique_together = ('user', 'game')
+
+
+class GameFromAPI(models.Model):
+    title = models.CharField(max_length=220)
+    steamid = models.CharField(max_length=128)
+    price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    genre = models.CharField(max_length=128, null=True, blank=True)
+    developer = models.CharField(max_length=128, null=True, blank=True)
+    publisher = models.CharField(max_length=128, null=True, blank=True)
+    release = models.CharField(max_length=128, null=True, blank=True)
+    logo = models.CharField(max_length=300, null=True, blank=True)

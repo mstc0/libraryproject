@@ -79,9 +79,16 @@
                     <tbody id="myTable-publishers">
                     {% for game in games %}
                         <tr style="transform: rotate(0)">
+                            <td class="d-flex justify-content-end" style="vertical-align: middle;">
+                                {% if game.game.avatar %}
+                                <img class='border border-secondary rounded' src="{% static game.game.avatar|cut:'library/static/' %}" style="height: 40px; width: 40px">
+                                {% else %}
+                                <img class='border border-secondary rounded' src="{% static 'game/avatar/placeholder.png' %}" style="height: 40px; width: 40px">
+                                {% endif %}
+                            </td>
                             <td style="vertical-align: middle;">
                                 <a href="{% url 'game-read-detail' game.game.id %}"
-                                   class="stretched-link link-light link-underline-opacity-0">{{ game.game.title }}
+                                   class="d-flex justify-content-start stretched-link link-light link-underline-opacity-0">{{ game.game.title }}
                                 </a>
                             </td>
                         </tr>

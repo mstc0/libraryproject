@@ -1,8 +1,9 @@
 from django import forms
-from library import models
-from django.db.transaction import atomic
 from django.contrib.auth.forms import UserCreationForm, ValidationError
 from django.core.files.images import get_image_dimensions
+from django.db.transaction import atomic
+
+from library import models
 
 
 class SignUpForm(UserCreationForm):
@@ -83,10 +84,11 @@ class GameImageForm(forms.ModelForm):
             if len(logo) > (1024 * 1024):
                 raise forms.ValidationError('Logo file size may not exceed 1MB.')
 
-        except AttributeError:
+        except AttributeError and TypeError:
             pass
 
-        return logo
+        if logo:
+            return logo
 
     def clean_avatar(self):
         avatar = self.cleaned_data['avatar']
@@ -104,7 +106,8 @@ class GameImageForm(forms.ModelForm):
             if len(avatar) > (40 * 1024):
                 raise forms.ValidationError('Logo file size may not exceed 40k.')
 
-        except:
+        except AttributeError and TypeError:
             pass
 
-        return avatar
+        if avatar:
+            return avatar

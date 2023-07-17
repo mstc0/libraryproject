@@ -56,7 +56,7 @@ class ProfileView(View):
 class ProfileDisplayUpdateView(UpdateView):
     template_name = 'crud/profile/display-update.html'
     fields = ('display_name',)
-    success_url = reverse_lazy('profile')
+    success_url = reverse_lazy('my-profile')
 
     def get_object(self):
         return models.UserExtraProfile.objects.get(user_id=self.request.user.id)
@@ -65,7 +65,7 @@ class ProfileDisplayUpdateView(UpdateView):
 class ProfileEmailUpdateView(UpdateView):
     template_name = 'crud/profile/email-update.html'
     fields = ('email',)
-    success_url = reverse_lazy('profile')
+    success_url = reverse_lazy('my-profile')
 
     def get_object(self):
         return self.request.user

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}List of Steam Games{% endblock %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static '/css/pagination.css' %}"/>
+{% endblock %}
+{% load django_tables2 %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+    {% if filter %}
+        <div class="container w-75">
+            <form action="" method="get" class="form form-inline">
+                <div class="row p-2">
+                    <div class="col-4 d-flex align-items-center justify-content-end">
+                        Title:
+                    </div>
+                    <div class="col-5">
+                        {{ filter.form.title }}
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-4 d-flex align-items-center justify-content-end">
+                        Genre:
+                    </div>
+                    <div class="col-5">
+                        {{ filter.form.genre }}
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-4 d-flex align-items-center justify-content-end">
+                        Price:
+                    </div>
+                    <div class="col-5 d-flex align-items-center">
+                        <input type="number" class="form-control text-white bg-dark border-secondary" name="price_min"
+                               id="id_price_0" step=".01">
+                        <span class="mx-2">-</span>
+                        <input type="number" class="form-control text-white bg-dark border-secondary" name="price_max"
+                               id="id_price_1" step=".01">
+                    </div>
+                </div>
+{#                <div class="row p-2">#}
+{#                    <div class="col-4 d-flex align-items-center justify-content-end">#}
+{#                        Release:#}
+{#                    </div>#}
+{#                    <div class="col-5 d-flex">#}
+{#                        {{ filter.form.release }}#}
+{#                    </div>#}
+{#                </div>#}
+                <div class="row p-2">
+                    <div class="col-9 d-flex justify-content-end">
+                        <button class="btn btn-secondary">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    {% endif %}
+    {% render_table table %}
+{% endblock %}

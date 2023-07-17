@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'library',
     'crispy_forms',
     'crispy_bootstrap5',
+    'django_tables2',
+    'django_filters',
+    "django_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -132,3 +135,4 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 CART_SESSION_ID = 'cart'
 SESSION_COOKIE_AGE = 1209600
 LOGIN_REDIRECT_URL = 'my-profile'
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap5.html"

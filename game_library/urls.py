@@ -33,6 +33,7 @@ urlpatterns = [
     path('accounts/logout/', views.CustomLogoutView.as_view(), name='logout'),
     path('manage/admin', views.AdminPanel.as_view(), name='admin-panel'),
     path('accounts/wishlist', views.wishlist, name='wish-list'),
+    path('manage/admin/apigames', views.pull_games_from_api, name='update-api-games'),
     path('test', views.test),
     # -- CART --
     path('cart', views.cart_detail, name='cart'),
@@ -43,7 +44,9 @@ urlpatterns = [
     path('manage/game/create', game.GameCreateView.as_view(), name='game-create'),
     path('manage/game/update/<pk>', game.GameUpdateView.as_view(), name='game-update'),
     path('manage/game/delete/<pk>', game.GameDeleteView.as_view(), name='game-delete'),
-    path('view/game', game.GameListView.as_view(), name='game-read'),
+    path('view/game', game.GamesTableView.as_view(), name='game-read'),
+    path('view/apigame', game.GamesAPITableView.as_view(), name='game-api-read'),
+    path('view/apigame/<steamid>', game.GameAPIDetailView.as_view(), name='game-api-read-detail'),
     path('view/game/<int:pk>', game.GameDetailView.as_view(), name='game-read-detail'),
     path('view/game/<int:pk>/addreview', views.ReviewCreateView.as_view(), name='game-add-review'),
     # -- GENRE --

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import LogoutView
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
-from library import forms, models
+from library import forms, models, tables
 from .cart import Cart
 # Create your views_dir here.
 
@@ -90,3 +90,22 @@ def wishlist(request):
         if not created:
             wishlist.delete()
     return render(request, template_name='wish-list.html', context={'wishlist': wish_list})
+
+
+def pull_games_from_api(request):
+    from urllib.request import urlopen
+    import json
+
+    response = urlopen("https://api.steampowered.com/ISteamApps/GetAppList/v2/")
+    response_json = json.loads(response.read())
+    steam_games = {}
+
+    for element in response_json['applist']['apps']:
+        steam_games[str(element['appid'])] = element['name']
+
+    for steamid in steam_games.keys():
+        game, _ = models.GameFromAPI.objects.get_or_create(title=steam_games[steamid], steamid=steamid)
+        if _:
+            game.save()
+
+    return redirect('admin-panel')

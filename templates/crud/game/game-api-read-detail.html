@@ -9,7 +9,7 @@
 {% block content %}
     <div class="d-flex justify-content-center">
         <div class="border border-secondary rounded d-flex align-items-end mx-5 flex-fill"
-             style="overflow: hidden; height: 400px; background-image: url({% static game.logo|cut:'library/static/' %}); background-size: cover; background-position: center; background-repeat: no-repeat">
+             style="overflow: hidden; height: 400px; background-image: url({{ game.logo }}); background-size: cover; background-position: center; background-repeat: no-repeat">
             <div class="border-top border-secondary p-3 bg-dark mt-5 flex-fill text-center d-flex justify-content-between">
                 {% if user.is_authenticated %}
                     <div class="d-flex bg-black border rounded border-black mx-5">
@@ -59,43 +59,19 @@
                     <tbody>
                     <tr>
                         <th class="text-end" scope="row">Release Date:</th>
-                        <td colspan="2">{{ game.release|date }}</td>
+                        <td colspan="2">{{ game.release }}</td>
                     </tr>
                     <tr>
                         <th class="text-end" scope="row">Genre:</th>
-                        <td colspan="2">
-                            {% for genre in game.genre.all %}
-                                {% if game.genre.last == genre %}
-                                    {{ genre.name }}
-                                {% else %}
-                                    {{ genre.name }},
-                                {% endif %}
-                            {% endfor %}
-                        </td>
+                        <td colspan="2">{{ game.genre }}</td>
                     </tr>
                     <tr>
                         <th class="text-end" scope="row">Developer:</th>
-                        <td colspan="2">
-                            {% for developer in game.developer.all %}
-                                {% if game.developer.last == developer %}
-                                    {{ developer.name }}
-                                {% else %}
-                                    {{ developer.name }},
-                                {% endif %}
-                            {% endfor %}
-                        </td>
+                        <td colspan="2">{{ game.developer }}</td>
                     </tr>
                     <tr>
                         <th class="text-end" scope="row">Publisher:</th>
-                        <td colspan="2">
-                            {% for publisher in game.publisher.all %}
-                                {% if game.publisher.last == publisher %}
-                                    {{ publisher.name }}
-                                {% else %}
-                                    {{ publisher.name }},
-                                {% endif %}
-                            {% endfor %}
-                        </td>
+                        <td colspan="2">{{ game.publisher }}</td>
                     </tr>
                     </tbody>
                 </table>
