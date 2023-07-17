@@ -35,6 +35,8 @@ urlpatterns = [
     path('accounts/wishlist', views.wishlist, name='wish-list'),
     path('manage/admin/apigames', views.pull_games_from_api, name='update-api-games'),
     path('test', views.test),
+    path('', views.Home.as_view(), name='home'),
+    path('about', views.About.as_view(), name='about'),
     # -- CART --
     path('cart', views.cart_detail, name='cart'),
     path('cart/add/<int:game_id>', views.cart_add, name='cart-add'),

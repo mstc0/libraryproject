@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}{{ profile.display_name }} Profile{% endblock %}
-{% block content %}
-    {% load static %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static '/css/dm.css' %}"/>
+{% endblock %}
+{% block content %}{% load static %}
 
     <div class="d-flex">
         <div class="border border-4 overflow-hidden border-secondary rounded d-flex mx-3"
@@ -30,51 +33,73 @@
                 <tr>
                     <th></th>
                 </tr>
-                <tr>
-                    {% if profile in my_profile.friends.all %}
-                        <th class="text-end" scope="row">
+                {% if user.is_authenticated %}
+                    <tr>
+                        {% if profile in my_profile.friends.all %}
+                            <th class="text-end" scope="row">
                                 <button type="button" class="btn btn-success" style="--bs-btn-padding-y: .1rem;
                                                 --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
-                                        " disabled>Added as Friend</button>
-                        </th>
-                    {% elif not is_requested %}
-                        <th class="text-end" scope="row">
-                            <a href="{% url 'profile-add-friend' profile.user.id %}">
-                                <button type="button" class="btn btn-success" style="--bs-btn-padding-y: .1rem;
+                                        " disabled>Added as Friend
+                                </button>
+                            </th>
+                        {% elif not is_requested %}
+                            <th class="text-end" scope="row">
+                                <a href="{% url 'profile-add-friend' profile.user.id %}">
+                                    <button type="button" class="btn btn-success" style="--bs-btn-padding-y: .1rem;
                                                 --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
                                         ">Invite to Friends
-                                </button>
-                            </a>
-                        </th>
-                    {% else %}
-                        <th class="text-end" scope="row">
-                            <form method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger" name="cancel2"
-                                        value="{{ is_requested.first.receiver.id }}" style="--bs-btn-padding-y: .1rem;
+                                    </button>
+                                </a>
+                            </th>
+                        {% else %}
+                            <th class="text-end" scope="row">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger" name="cancel2"
+                                            value="{{ is_requested.first.receiver.id }}" style="--bs-btn-padding-y: .1rem;
                                                 --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
                                         ">
-                                    Cancel Friend Request
-                                </button>
-                            </form>
-                        </th>
-                    {% endif %}
-                </tr>
+                                        Cancel Friend Request
+                                    </button>
+                                </form>
+                            </th>
+                        {% endif %}
+                    </tr>
+                {% endif %}
                 </tbody>
             </table>
         </div>
     </div>
-    <div class="p-3 d-flex">
-        <div class="border-top border-secondary flex-fill text-center py-3">
-            <p>SMALL GAME LIST</p>
-            <div class="border p-3 my-3 mx-3">
-                games go here
-            </div>
-        </div>
-        <div class="border-top border-secondary flex-fill text-center py-3">
-            FRIEND LIST HERE
-            <div class="border p-3 my-3 mx-3">
-                friends go here
+    <div class="p-3">
+       <div class="border-top border-secondary flex-fill text-center py-3 d-flex justify-content-center">
+            <div class="border p-3 my-3 mx-3 border-secondary w-50"
+                 style="height: 400px; max-height: 400px; overflow-y: scroll">
+                <table id='table-publishers'
+                       data-toggle="table"
+                       data-search="true"
+                       data-filter-control="true"
+                       class="table table-dark table-hover">
+                    <tbody id="myTable-publishers">
+                    {% for game in profile.owned_games.all %}
+                        <tr style="transform: rotate(0)">
+                            <td class="d-flex justify-content-end" style="vertical-align: middle;">
+                                {% if game.avatar %}
+                                <img class='border border-secondary rounded' src="{% static game.avatar|cut:'library/static/' %}" style="height: 40px; width: 40px">
+                                {% else %}
+                                <img class='border border-secondary rounded' src="{% static 'game/avatar/placeholder.png' %}" style="height: 40px; width: 40px">
+                                {% endif %}
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <a href="{% url 'game-read-detail' game.id %}"
+                                   class="d-flex justify-content-start stretched-link link-light link-underline-opacity-0">{{ game.title }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <td style="vertical-align: middle">No owned games yet</td>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

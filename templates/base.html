@@ -11,7 +11,7 @@
 <body class="text-light" style="background-color: #323435">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary" style="height: 5em">
     <div class="container-fluid container w-50">
-        <a class="navbar-brand" href="#">TESTAPP</a>
+        <a class="navbar-brand" href="#">LIBAPP</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -19,16 +19,16 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link {% block home %}{% endblock %}" aria-current="page" href="{% url 'home' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'game-read' %}">Games</a>
+                    <a class="nav-link {% block games %}{% endblock %}" href="{% url 'game-read' %}">Games</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Marketplace</a>
+                    <a class="nav-link {% block steam %}{% endblock %}" href="{% url 'game-api-read' %}">STEAM Games</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link {% block about %}{% endblock %}" href="{% url 'about' %}">About</a>
                 </li>
             </ul>
             {% if user.is_authenticated %}
@@ -69,7 +69,7 @@
                         <a class="nav-link" href="{% url 'login' %}">Login</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">Register</a>
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
                     </li>
                 </ul>
             {% endif %}

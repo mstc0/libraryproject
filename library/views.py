@@ -1,11 +1,14 @@
 import datetime
 
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import LogoutView
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
-from library import forms, models, tables
+
+from library import forms, models
 from .cart import Cart
+
+
 # Create your views_dir here.
 
 
@@ -13,6 +16,14 @@ def test(req):
     cart = Cart(req)
     cart.clear()
     return render(req, template_name='test.html')
+
+
+class Home(TemplateView):
+    template_name = 'home.html'
+
+
+class About(TemplateView):
+    template_name = 'about.html'
 
 
 class CustomLogoutView(LogoutView):
@@ -23,6 +34,7 @@ class RegisterCreateView(CreateView):
     success_url = reverse_lazy('login')
     form_class = forms.SignUpForm
     template_name = 'registration/register.html'
+
 
 class AdminPanel(TemplateView):
     template_name = 'adminpanel.html'
@@ -86,7 +98,8 @@ def wishlist(request):
     profile = models.UserExtraProfile.objects.get(user=request.user)
     wish_list = models.UserWishlist.objects.all().filter(user=profile).all()
     if 'remove-wishlist' in request.POST:
-        wishlist, created = models.UserWishlist.objects.get_or_create(user=profile, game=request.POST['remove-wishlist'])
+        wishlist, created = models.UserWishlist.objects.get_or_create(user=profile,
+                                                                      game=request.POST['remove-wishlist'])
         if not created:
             wishlist.delete()
     return render(request, template_name='wish-list.html', context={'wishlist': wish_list})

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}List of Steam Games{% endblock %}
 {% load static %}
+{% block games %}active{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static '/css/pagination.css' %}"/>
 {% endblock %}

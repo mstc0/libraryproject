@@ -7,6 +7,11 @@ from library import models
 
 
 class SignUpForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super(UserCreationForm, self).__init__(*args, **kwargs)
+        for field in ['username', 'password1', 'password2']:
+            self.fields[field].help_text = None
+
     class Meta(UserCreationForm.Meta):
         fields = ['username', 'email', 'display_name']
 
@@ -50,8 +55,8 @@ class AvatarProfileForm(forms.ModelForm):
             if not (main == 'image' and sub in ['jpeg', 'png']):
                 raise forms.ValidationError(f'Only JPG or PNG are allowed.')
 
-            if len(avatar) > (40 * 1024):
-                raise forms.ValidationError('Avatar file size may not exceed 40k.')
+            if len(avatar) > (128 * 1024):
+                raise forms.ValidationError('Avatar file size may not exceed 128k.')
 
         except AttributeError:
             pass
@@ -103,8 +108,8 @@ class GameImageForm(forms.ModelForm):
             if not (main == 'image' and sub in ['jpeg', 'png']):
                 raise forms.ValidationError(f'Only JPG or PNG are allowed.')
 
-            if len(avatar) > (40 * 1024):
-                raise forms.ValidationError('Logo file size may not exceed 40k.')
+            if len(avatar) > (128 * 1024):
+                raise forms.ValidationError('Avatar file size may not exceed 128k.')
 
         except AttributeError and TypeError:
             pass

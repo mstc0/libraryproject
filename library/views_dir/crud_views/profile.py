@@ -22,11 +22,14 @@ class ProfileView(View):
                                    'friend_requests_sent': requests_sent,
                                    })
         else:
-            my_profile = models.UserExtraProfile.objects.get(user=req.user)
             user = models.User.objects.get(id=pk)
             user_profile = models.UserExtraProfile.objects.get(user=user)
-            friend_requests = models.FriendRequest.objects.all()
-            is_requested = friend_requests.filter(sender=my_profile, receiver=user_profile, is_active=True)
+            if self.request.user.is_authenticated:
+                my_profile = models.UserExtraProfile.objects.get(user=req.user)
+                friend_requests = models.FriendRequest.objects.all()
+                is_requested = friend_requests.filter(sender=my_profile, receiver=user_profile, is_active=True)
+            is_requested = None
+            my_profile = None
             return render(req, template_name='user-profile.html',
                           context={'profile': user_profile,
                                    'is_requested': is_requested,
@@ -58,7 +61,7 @@ class ProfileDisplayUpdateView(UpdateView):
     fields = ('display_name',)
     success_url = reverse_lazy('my-profile')
 
-    def get_object(self):
+    def get_object(self, *args, **kwargs):
         return models.UserExtraProfile.objects.get(user_id=self.request.user.id)
 
 
@@ -67,7 +70,7 @@ class ProfileEmailUpdateView(UpdateView):
     fields = ('email',)
     success_url = reverse_lazy('my-profile')
 
-    def get_object(self):
+    def get_object(self, *args, **kwargs):
         return self.request.user
 
 
@@ -75,7 +78,7 @@ class ProfileAvatarUpdateView(UpdateView):
     template_name = 'crud/profile/avatar-update.html'
     form_class = forms.AvatarProfileForm
 
-    def get_object(self):
+    def get_object(self, *args, **kwargs):
         return models.UserExtraProfile.objects.get(user_id=self.request.user.id)
 
     def get_success_url(self):
