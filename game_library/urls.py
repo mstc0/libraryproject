@@ -37,6 +37,7 @@ urlpatterns = [
     path('test', views.test),
     path('', views.Home.as_view(), name='home'),
     path('about', views.About.as_view(), name='about'),
+    path('accounts/reviews', views.reviews, name='my-reviews'),
     # -- CART --
     path('cart', views.cart_detail, name='cart'),
     path('cart/add/<int:game_id>', views.cart_add, name='cart-add'),

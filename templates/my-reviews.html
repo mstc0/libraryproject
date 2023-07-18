@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}List of Games{% endblock %}
+{% load static %}
+{% block extra_css %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static '/css/pagination.css' %}"/>
+{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="border border-secondary rounded d-flex flex-column align-items-center">
+        {% for x in reviews %}
+            <div class="p-2 w-75 mt-2">
+                <table class="table table-dark" style="table-layout:fixed; word-wrap: break-word">
+                    <tbody>
+                    <tr>
+                        <th class="col-md-4 text-end" scope="row">Game:</th>
+                        <td>
+                            <a href="{% url 'game-read-detail' x.game.id %}"
+                               class="link-light link-underline link-underline-opacity-0">
+                                {{ x.game.title }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4 text-end" scope="row">User:</th>
+                        <td>
+                            <a href="{% url 'profile' x.user.user_id %}"
+                               class="link-light link-underline link-underline-opacity-0">
+                                {{ x.user }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class='col-md-4 text-end' scope="row">Positive:</th>
+                        <td>{{ x.is_positive }}</td>
+                    </tr>
+                    <tr>
+                        <th class='col-md-4 text-end' scope="row">Review:</th>
+                        <td>{{ x.review_content }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        {% empty %}
+            No reviews for this game
+        {% endfor %}
+    </div>
+{% endblock %}
+
+

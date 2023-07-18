@@ -131,3 +131,14 @@ def pull_games_from_api(request):
             game.save()
 
     return redirect('admin-panel')
+
+
+@login_required
+def reviews(request):
+    profile = models.UserExtraProfile.objects.get(user=request.user)
+    reviews = models.Review.objects.all().filter(user=profile).all()
+    if 'remove-review' in request.POST:
+        review, created = models.Review.objects.get_or_create(user=profile, game=request.POST['remove-wishlist'])
+        if not created:
+            review.delete()
+    return render(request, template_name='my-reviews.html', context={'reviews': reviews})

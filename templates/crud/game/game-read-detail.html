@@ -100,44 +100,49 @@
                     </tbody>
                 </table>
                 {% if user.is_authenticated %}
-                <div class="border-top border-secondary"></div>
-                <div class="p-3 my-3 text-center">
-                    <p>Friends who own this game:</p>
-                    <div class="border border-secondary rounded d-flex justify-content-center p-3">
-                        {% for friend in my_friends %}
-                            {% if game in friend.owned_games.all %}
-                                <a href="{% url 'profile' pk=friend.user.id %}"
-                                   class="border border-secondary rounded w-25 p-2  mx-2 hoverme link-light link-underline link-underline-opacity-0">
-                                    <div class="d-flex justify-content-center align-content-center">
-                                        {% if friend.avatar %}
-                                            <img class="border border-secondary rounded"
-                                                 src="{% static friend.avatar|cut:'library/static/' %}"
-                                                 style="width: 40px; height: 40px">
-                                        {% else %}
-                                            <img class="border border-secondary rounded"
-                                                 src="{% static 'avatars/default-profile.png' %}"
-                                                 style="width: 40px; height: 40px">
-                                        {% endif %}
-                                        <div class="ms-2"
-                                             style="display: flex; align-items: center; justify-content: center">
-                                            <b>{{ friend }}</b>
+                    <div class="border-top border-secondary"></div>
+                    <div class="p-3 my-3 text-center">
+                        <p>Friends who own this game:</p>
+                        <div class="border border-secondary rounded d-flex justify-content-center p-3">
+                            {% for friend in my_friends %}
+                                {% if game in friend.owned_games.all %}
+                                    <a href="{% url 'profile' pk=friend.user.id %}"
+                                       class="border border-secondary rounded w-25 p-2  mx-2 hoverme link-light link-underline link-underline-opacity-0">
+                                        <div class="d-flex justify-content-center align-content-center">
+                                            {% if friend.avatar %}
+                                                <img class="border border-secondary rounded"
+                                                     src="{% static friend.avatar|cut:'library/static/' %}"
+                                                     style="width: 40px; height: 40px" alt="friend-avatar">
+                                            {% else %}
+                                                <img class="border border-secondary rounded"
+                                                     src="{% static 'avatars/default-profile.png' %}"
+                                                     style="width: 40px; height: 40px" alt="friend-default-avatar">
+                                            {% endif %}
+                                            <div class="ms-2"
+                                                 style="display: flex; align-items: center; justify-content: center">
+                                                <b>{{ friend }}</b>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            {% endif %}
-                        {% endfor %}
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
                 {% endif %}
             </div>
         </div>
     </div>
     <div class="border border-secondary rounded mx-5 mt-2 bg-dark" style="overflow: hidden">
         <div class="flex-fill p-3 mt-2">
-            <div class="text-center">
+            <div class="text-center d-flex justify-content-between mx-5 pb-3" style="align-items: center">
                 <h3>Reviews from our users</h3>
+                <a href="{% url 'game-add-review' game.id %}">
+                    <button type="button" class="btn btn-success border border-black rounded mx-5">
+                        Add Review
+                    </button>
+                </a>
             </div>
-            <div class="border border-secondary rounded d-flex justify-content-center"
+            <div class="border border-secondary rounded d-flex flex-column align-items-center"
                  style="max-height: 30em; overflow-y: auto;">
                 {% for x in reviews %}
                     <div class="p-2 w-75 mt-2">
@@ -145,7 +150,12 @@
                             <tbody>
                             <tr>
                                 <th class="col-md-4 text-end" scope="row">User:</th>
-                                <td>{{ x.user }}</td>
+                                <td>
+                                    <a href="{% url 'profile' x.user.user_id %}"
+                                       class="link-light link-underline link-underline-opacity-0">
+                                        {{ x.user }}
+                                    </a>
+                                </td>
                             </tr>
                             <tr>
                                 <th class='col-md-4 text-end' scope="row">Positive:</th>
