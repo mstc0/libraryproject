@@ -1,5 +1,4 @@
 from library import models
-from django.core.exceptions import ObjectDoesNotExist
 from .cart import Cart
 
 def get_profile(req):

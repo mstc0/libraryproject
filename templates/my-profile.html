@@ -18,9 +18,9 @@
                 </a>
             </div>
             {% if not profile.avatar %}
-                <img id="to-hover" class="img-fluid" src="{% static 'avatars/default-profile.png' %}">
+                <img id="to-hover" class="img-fluid" src="{% static 'avatars/default-profile.png' %}" alt="default-avatar">
             {% else %}
-                <img id="to-hover" class="img-fluid" src="{% static profile.avatar|cut:'library/static/' %}">
+                <img id="to-hover" class="img-fluid" src="{% static profile.avatar|cut:'library/static/' %}" alt="user-avatar">
             {% endif %}
         </div>
         <div class="d-flex mx-5 align-items-center">
@@ -81,9 +81,9 @@
                         <tr style="transform: rotate(0)">
                             <td class="d-flex justify-content-end" style="vertical-align: middle;">
                                 {% if game.game.avatar %}
-                                <img class='border border-secondary rounded' src="{% static game.game.avatar|cut:'library/static/' %}" style="height: 40px; width: 40px">
+                                <img class='border border-secondary rounded' src="{% static game.game.avatar|cut:'library/static/' %}" style="height: 40px; width: 40px" alt="game-avatar">
                                 {% else %}
-                                <img class='border border-secondary rounded' src="{% static 'game/avatar/placeholder.png' %}" style="height: 40px; width: 40px">
+                                <img class='border border-secondary rounded' src="{% static 'game/avatar/placeholder.png' %}" style="height: 40px; width: 40px" alt="game-avatar-placeholder">
                                 {% endif %}
                             </td>
                             <td style="vertical-align: middle;">
@@ -188,11 +188,11 @@
                                     {% if friend.avatar %}
                                         <img class="border border-secondary rounded"
                                              src="{% static friend.avatar|cut:'library/static/' %}"
-                                             style="width: 40px; height: 40px">
+                                             style="width: 40px; height: 40px" alt="friend-avatar">
                                     {% else %}
                                         <img class="border border-secondary rounded"
                                              src="{% static 'avatars/default-profile.png' %}"
-                                             style="width: 40px; height: 40px">
+                                             style="width: 40px; height: 40px" alt="friend-default-avatar">
                                     {% endif %}
                                     <div class="ms-4"
                                          style="display: flex; align-items: center; justify-content: center">
