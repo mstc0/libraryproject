@@ -116,16 +116,16 @@
                 </div>
                 <table id="myTable-requests-received" class="table table-dark table-hover" style="display: none">
                     <tbody id="myTable">
-                    {% for request in friend_requests_received %}
+                    {% for frequest in friend_requests_received %}
                         <tr>
-                            <td style="vertical-align: middle">{{ request }}</td>
-                            <td style="vertical-align: middle">{{ request.timestamp|date }}</td>
+                            <td style="vertical-align: middle">{{ frequest }}</td>
+                            <td style="vertical-align: middle">{{ frequest.timestamp|date }}</td>
                             <td style="vertical-align: middle">
                                 <div class="d-flex">
                                     <form method="post">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-success mx-1" name="accept"
-                                                value="{{ request.sender.id }}" style="--bs-btn-padding-y: .1rem;
+                                                value="{{ frequest.receiver.id }}" style="--bs-btn-padding-y: .1rem;
                                                 --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
                                         ">
                                             ✓
@@ -134,7 +134,7 @@
                                     <form method="post">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-danger mx-1" name="decline"
-                                                value="{{ request.sender.id }}" style="--bs-btn-padding-y: .1rem;
+                                                value="{{ frequest.receiver.id }}" style="--bs-btn-padding-y: .1rem;
                                                 --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
                                         ">
                                             ✕
@@ -150,16 +150,16 @@
                 </table>
                 <table id="myTable-requests-sent" class="table table-dark table-hover" style="display: none">
                     <tbody id="myTable">
-                    {% for request in friend_requests_sent %}
+                    {% for frequest in friend_requests_sent %}
                         <tr>
-                            <td style="vertical-align: middle">{{ request.receiver }}</td>
-                            <td style="vertical-align: middle">{{ request.timestamp|date }}</td>
+                            <td style="vertical-align: middle">{{ frequest.receiver }}</td>
+                            <td style="vertical-align: middle">{{ frequest.timestamp|date }}</td>
                             <td style="vertical-align: middle">
                                 <div class="d-flex">
                                     <form method="post">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-danger mx-1" name="cancel"
-                                                value="{{ request.receiver.id }}" style="--bs-btn-padding-y: .1rem;
+                                                value="{{ frequest.receiver.id }}" style="--bs-btn-padding-y: .1rem;
                                                 --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
                                         ">
                                             ✕

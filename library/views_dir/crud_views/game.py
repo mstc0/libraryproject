@@ -3,6 +3,7 @@ import os
 from urllib.request import urlopen
 
 import django_tables2 as tables
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
@@ -13,7 +14,8 @@ from library import models, forms
 from library import tables as lib_tables
 
 
-class GameCreateView(CreateView):
+class GameCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = "library.add_game"
     model = models.Game
     form_class = forms.GameImageForm
     template_name = 'crud/game/game-create.html'
@@ -45,18 +47,19 @@ class GameDetailView(DetailView):
     def post(self, request, pk):
         game = models.Game.objects.get(id=pk)
         profile = models.UserExtraProfile.objects.get(user_id=request.user.id)
-        if 'add-wishlist' in request.POST:
+        if 'add-wishlist' in request.POST and self.request.user.is_authenticated:
             wishlist, created = models.UserWishlist.objects.get_or_create(user=profile, game=game)
             if created:
                 wishlist.save()
-        if 'remove-wishlist' in request.POST:
+        if 'remove-wishlist' in request.POST and self.request.user.is_authenticated:
             wishlist, created = models.UserWishlist.objects.get_or_create(user=profile, game=game)
             if not created:
                 wishlist.delete()
         return redirect('game-read-detail', pk=pk)
 
 
-class GameUpdateView(UpdateView):
+class GameUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "library.change_game"
     model = models.Game
     form_class = forms.GameImageForm
     template_name = 'crud/game/game-update.html'
@@ -71,7 +74,8 @@ class GameUpdateView(UpdateView):
         return super(GameUpdateView, self).form_valid(form)
 
 
-class GameDeleteView(DeleteView):
+class GameDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = "library.delete_game"
     model = models.Game
     template_name = 'crud/game/game-delete.html'
     fields = '__all__'

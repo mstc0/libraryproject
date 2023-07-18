@@ -42,16 +42,7 @@
                                         " disabled>Added as Friend
                                 </button>
                             </th>
-                        {% elif not is_requested %}
-                            <th class="text-end" scope="row">
-                                <a href="{% url 'profile-add-friend' profile.user.id %}">
-                                    <button type="button" class="btn btn-success" style="--bs-btn-padding-y: .1rem;
-                                                --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
-                                        ">Invite to Friends
-                                    </button>
-                                </a>
-                            </th>
-                        {% else %}
+                        {% elif is_requested %}
                             <th class="text-end" scope="row">
                                 <form method="post">
                                     {% csrf_token %}
@@ -63,6 +54,15 @@
                                     </button>
                                 </form>
                             </th>
+                        {% else %}
+                            <th class="text-end" scope="row">
+                                <a href="{% url 'profile-add-friend' profile.user.id %}">
+                                    <button type="button" class="btn btn-success" style="--bs-btn-padding-y: .1rem;
+                                                --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
+                                        ">Invite to Friends
+                                    </button>
+                                </a>
+                            </th>
                         {% endif %}
                     </tr>
                 {% endif %}
@@ -71,7 +71,7 @@
         </div>
     </div>
     <div class="p-3">
-       <div class="border-top border-secondary flex-fill text-center py-3 d-flex justify-content-center">
+        <div class="border-top border-secondary flex-fill text-center py-3 d-flex justify-content-center">
             <div class="border p-3 my-3 mx-3 border-secondary w-50"
                  style="height: 400px; max-height: 400px; overflow-y: scroll">
                 <table id='table-publishers'
@@ -84,9 +84,13 @@
                         <tr style="transform: rotate(0)">
                             <td class="d-flex justify-content-end" style="vertical-align: middle;">
                                 {% if game.avatar %}
-                                <img class='border border-secondary rounded' src="{% static game.avatar|cut:'library/static/' %}" style="height: 40px; width: 40px">
+                                    <img class='border border-secondary rounded'
+                                         src="{% static game.avatar|cut:'library/static/' %}"
+                                         style="height: 40px; width: 40px">
                                 {% else %}
-                                <img class='border border-secondary rounded' src="{% static 'game/avatar/placeholder.png' %}" style="height: 40px; width: 40px">
+                                    <img class='border border-secondary rounded'
+                                         src="{% static 'game/avatar/placeholder.png' %}"
+                                         style="height: 40px; width: 40px">
                                 {% endif %}
                             </td>
                             <td style="vertical-align: middle;">

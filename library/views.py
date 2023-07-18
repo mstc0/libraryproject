@@ -1,5 +1,6 @@
 import datetime
-
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.views import LogoutView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -13,8 +14,6 @@ from .cart import Cart
 
 
 def test(req):
-    cart = Cart(req)
-    cart.clear()
     return render(req, template_name='test.html')
 
 
@@ -36,16 +35,21 @@ class RegisterCreateView(CreateView):
     template_name = 'registration/register.html'
 
 
-class AdminPanel(TemplateView):
-    template_name = 'adminpanel.html'
-    extra_context = {
-        'games': models.Game.objects.all(),
-        'genres': models.Genre.objects.all(),
-        'developers': models.Developer.objects.all(),
-        'publishers': models.Publisher.objects.all(),
-    }
+class AdminPanel(PermissionRequiredMixin, TemplateView):
+    permission_required = "library.add_developer"
+    template = 'adminpanel.html'
+
+    def get(self, request, *args, **kwargs):
+        self.context = {
+            'games': models.Game.objects.all(),
+            'genres': models.Genre.objects.all(),
+            'developers': models.Developer.objects.all(),
+            'publishers': models.Publisher.objects.all(),
+        }
+        return render(request, self.template, self.context)
 
 
+@login_required
 def cart_add(request, game_id):
     cart = Cart(request)
     game = get_object_or_404(models.Game, id=game_id)
@@ -53,6 +57,7 @@ def cart_add(request, game_id):
     return redirect(reverse_lazy('cart'))
 
 
+@login_required
 def cart_remove(request, game_id):
     cart = Cart(request)
     game = get_object_or_404(models.Game, id=game_id)
@@ -60,11 +65,13 @@ def cart_remove(request, game_id):
     return redirect(reverse_lazy('cart'))
 
 
+@login_required
 def cart_detail(request):
     cart = Cart(request)
     return render(request, 'cart.html', {'cart': cart})
 
 
+@login_required
 def cart_purchase(request):
     cart = Cart(request)
     for game in cart.cart:
@@ -76,7 +83,7 @@ def cart_purchase(request):
     return redirect(reverse_lazy('cart'))
 
 
-class ReviewCreateView(CreateView):
+class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = models.Review
     fields = ('is_positive', 'review_content',)
     template_name = 'crud/game/game-create-review.html'
@@ -94,6 +101,7 @@ class ReviewCreateView(CreateView):
         return reverse_lazy('game-read-detail', kwargs={'pk': self.kwargs['pk']})
 
 
+@login_required
 def wishlist(request):
     profile = models.UserExtraProfile.objects.get(user=request.user)
     wish_list = models.UserWishlist.objects.all().filter(user=profile).all()
@@ -105,6 +113,7 @@ def wishlist(request):
     return render(request, template_name='wish-list.html', context={'wishlist': wish_list})
 
 
+@permission_required("library.add_developer")
 def pull_games_from_api(request):
     from urllib.request import urlopen
     import json

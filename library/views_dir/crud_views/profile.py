@@ -4,6 +4,8 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
 from django.views.generic import UpdateView, View
 from library import models
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 
 class ProfileView(View):
@@ -14,6 +16,12 @@ class ProfileView(View):
             requests_received = models.FriendRequest.objects.all().filter(receiver=my_profile, is_active=True)
             requests_sent = models.FriendRequest.objects.all().filter(sender=my_profile, is_active=True)
             friendlist = my_profile.friends.all()
+            self.context = {
+                'games': models.Game.objects.all(),
+                'genres': models.Genre.objects.all(),
+                'developers': models.Developer.objects.all(),
+                'publishers': models.Publisher.objects.all(),
+            }
             return render(req, template_name='my-profile.html',
                           context={'profile': my_profile,
                                    'games': games,
@@ -28,8 +36,9 @@ class ProfileView(View):
                 my_profile = models.UserExtraProfile.objects.get(user=req.user)
                 friend_requests = models.FriendRequest.objects.all()
                 is_requested = friend_requests.filter(sender=my_profile, receiver=user_profile, is_active=True)
-            is_requested = None
-            my_profile = None
+            else:
+                my_profile = None
+                is_requested = None
             return render(req, template_name='user-profile.html',
                           context={'profile': user_profile,
                                    'is_requested': is_requested,
@@ -37,26 +46,28 @@ class ProfileView(View):
 
     def post(self, request, pk):
         if 'accept' in request.POST:
-            sender = models.FriendRequest.objects.all().filter(sender=request.POST['accept'])
-            sender[0].accept()
-            return redirect('profile', pk=request.user.id)
+            receiver = models.FriendRequest.objects.all().filter(receiver=request.POST['accept'])
+            receiver[0].accept()
+            return redirect(request.META['HTTP_REFERER'])
         elif 'decline' in request.POST:
-            sender = models.FriendRequest.objects.all().filter(sender=request.POST['decline'])
-            sender[0].decline()
-            return redirect('profile', pk=request.user.id)
+            receiver = models.FriendRequest.objects.all().filter(receiver=request.POST['decline'])
+            receiver[0].decline()
+            return redirect(request.META['HTTP_REFERER'])
         elif 'cancel' in request.POST:
             receiver = models.FriendRequest.objects.all().filter(receiver=request.POST['cancel'])
+            print(receiver[0])
             receiver[0].cancel()
-            return redirect('profile', pk=request.user.id)
+            return redirect(request.META['HTTP_REFERER'])
         elif 'cancel2' in request.POST:
             receiver = models.FriendRequest.objects.all().filter(receiver=request.POST['cancel2'])
+            print(receiver[0])
             receiver[0].cancel()
-            return redirect('profile', pk=receiver[0].receiver.user.id)
+            return redirect(request.META['HTTP_REFERER'])
 
 
 
 
-class ProfileDisplayUpdateView(UpdateView):
+class ProfileDisplayUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'crud/profile/display-update.html'
     fields = ('display_name',)
     success_url = reverse_lazy('my-profile')
@@ -65,7 +76,7 @@ class ProfileDisplayUpdateView(UpdateView):
         return models.UserExtraProfile.objects.get(user_id=self.request.user.id)
 
 
-class ProfileEmailUpdateView(UpdateView):
+class ProfileEmailUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'crud/profile/email-update.html'
     fields = ('email',)
     success_url = reverse_lazy('my-profile')
@@ -74,7 +85,7 @@ class ProfileEmailUpdateView(UpdateView):
         return self.request.user
 
 
-class ProfileAvatarUpdateView(UpdateView):
+class ProfileAvatarUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'crud/profile/avatar-update.html'
     form_class = forms.AvatarProfileForm
 
@@ -91,7 +102,7 @@ class ProfileAvatarUpdateView(UpdateView):
         return super(ProfileAvatarUpdateView, self).form_valid(form)
 
 
-
+@login_required
 def delete_avatar(request):
     user_profile = models.UserExtraProfile.objects.get(user_id=request.user.id)
     try:
@@ -103,6 +114,7 @@ def delete_avatar(request):
     return redirect(reverse_lazy('profile', kwargs={'pk': request.user.id}))
 
 
+@login_required
 def request_friendship(request, pk):
     user_profile = models.UserExtraProfile.objects.get(user_id=request.user.id)
     target_profile = models.UserExtraProfile.objects.get(user_id=pk)
