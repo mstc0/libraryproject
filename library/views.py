@@ -20,6 +20,8 @@ def test(req):
 
 class Home(TemplateView):
     template_name = 'home.html'
+    last_games = models.Game.objects.all().order_by('-pk')
+    extra_context = {'last_games': last_games[0:3]}
 
 
 class About(TemplateView):

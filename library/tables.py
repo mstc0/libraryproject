@@ -27,7 +27,7 @@ class GenreColumn(tables.Column):
     def render(self, value):
         if not value:
             return format_html('No Genre Added')
-        genre = ''.join([genre.name for genre in value.all()])
+        genre = ', '.join([genre.name for genre in value.all()])
         return format_html('{value}', value=str(genre))
 
 
