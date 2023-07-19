@@ -48,8 +48,9 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
                                     aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="{% url 'profile' user.id %}">My Profile</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'wish-list' %}">My Wishlist</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'profile' user.id %}">Profile</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'wish-list' %}">Wishlist</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'my-reviews' %}">Reviews</a></li>
                                     {% if perms.library.add_game %}
                                         <li><a class="dropdown-item" href="{% url 'admin-panel' %}">Admin Panel</a></li>
                                     {% endif %}

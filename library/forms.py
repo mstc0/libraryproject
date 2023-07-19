@@ -74,45 +74,43 @@ class GameImageForm(forms.ModelForm):
 
     def clean_logo(self):
         logo = self.cleaned_data['logo']
+        if self.instance.logo != logo:
+            try:
+                w, h = get_image_dimensions(logo)
+                max_w = 800
+                max_h = 500
+                if w > max_w or h > max_h:
+                    raise forms.ValidationError(f'Please use image that is {max_w}x{max_h} or smaller')
 
-        try:
-            w, h = get_image_dimensions(logo)
-            max_w = 800
-            max_h = 500
-            if w > max_w or h > max_h:
-                raise forms.ValidationError(f'Please use image that is {max_w}x{max_h} or smaller')
+                main, sub = logo.content_type.split('/')
+                if not (main == 'image' and sub in ['jpeg', 'png']):
+                    raise forms.ValidationError(f'Only JPG or PNG are allowed.')
 
-            main, sub = logo.content_type.split('/')
-            if not (main == 'image' and sub in ['jpeg', 'png']):
-                raise forms.ValidationError(f'Only JPG or PNG are allowed.')
+                if len(logo) > (1024 * 1024):
+                    raise forms.ValidationError('Logo file size may not exceed 1MB.')
 
-            if len(logo) > (1024 * 1024):
-                raise forms.ValidationError('Logo file size may not exceed 1MB.')
+            except AttributeError and TypeError:
+                pass
 
-        except AttributeError and TypeError:
-            pass
-
-        if logo:
-            return logo
+        return logo
 
     def clean_avatar(self):
         avatar = self.cleaned_data['avatar']
+        if self.instance.avatar != avatar:
+            try:
+                w, h = get_image_dimensions(avatar)
+                max_w = max_h = 100
+                if w > max_w or h > max_h:
+                    raise forms.ValidationError(f'Please use image that is {max_w}x{max_h} or smaller')
 
-        try:
-            w, h = get_image_dimensions(avatar)
-            max_w = max_h = 100
-            if w > max_w or h > max_h:
-                raise forms.ValidationError(f'Please use image that is {max_w}x{max_h} or smaller')
+                main, sub = avatar.content_type.split('/')
+                if not (main == 'image' and sub in ['jpeg', 'png']):
+                    raise forms.ValidationError(f'Only JPG or PNG are allowed.')
 
-            main, sub = avatar.content_type.split('/')
-            if not (main == 'image' and sub in ['jpeg', 'png']):
-                raise forms.ValidationError(f'Only JPG or PNG are allowed.')
+                if len(avatar) > (128 * 1024):
+                    raise forms.ValidationError('Avatar file size may not exceed 128k.')
 
-            if len(avatar) > (128 * 1024):
-                raise forms.ValidationError('Avatar file size may not exceed 128k.')
+            except AttributeError and TypeError:
+                pass
 
-        except AttributeError and TypeError:
-            pass
-
-        if avatar:
-            return avatar
+        return avatar

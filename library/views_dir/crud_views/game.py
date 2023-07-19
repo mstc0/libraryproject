@@ -1,7 +1,7 @@
 import json
 import os
 from urllib.request import urlopen
-
+from django.templatetags.static import static
 import django_tables2 as tables
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import redirect
@@ -66,11 +66,13 @@ class GameUpdateView(PermissionRequiredMixin, UpdateView):
     success_url = reverse_lazy('admin-panel')
 
     def form_valid(self, form):
-        game = models.Game.objects.get(pk=self.kwargs['pk'])
-        if game.avatar:
-            os.remove(str(game.avatar))
-        if game.logo:
-            os.remove(str(game.logo))
+        game = self.get_object()
+        if game.avatar != form.cleaned_data['avatar']:
+            if game.avatar:
+                os.remove(str(game.avatar.path))
+        if game.logo != form.cleaned_data['logo']:
+            if game.logo:
+                os.remove(str(game.logo.path))
         return super(GameUpdateView, self).form_valid(form)
 
 

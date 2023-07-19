@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}List of Games{% endblock %}
+{% block title %}List of Reviews{% endblock %}
 {% load static %}
 {% block extra_css %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -8,6 +8,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+    <h2 class="text-center p-3">My Reviews</h2>
     <div class="border border-secondary rounded d-flex flex-column align-items-center">
         {% for x in reviews %}
             <div class="p-2 w-75 mt-2">
@@ -15,10 +16,21 @@
                     <tbody>
                     <tr>
                         <th class="col-md-4 text-end" scope="row">Game:</th>
-                        <td>
-                            <a href="{% url 'game-read-detail' x.game.id %}"
-                               class="link-light link-underline link-underline-opacity-0">
-                                {{ x.game.title }}
+                        <td class="d-flex justify-content-between">
+                            <div>
+                                <a href="{% url 'game-read-detail' x.game.id %}"
+                                   class="link-light link-underline link-underline-opacity-0">
+                                    {{ x.game.title }}
+                                </a>
+                            </div>
+                            <div>
+                                <a href="{% url 'game-delete-review' x.game.id %}">
+                                    <button type="button" class="btn btn-danger" style="--bs-btn-padding-y: .1rem;
+                                                --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
+                                        ">Remove
+                                    </button>
+                                </a>
+                            </div>
                             </a>
                         </td>
                     </tr>

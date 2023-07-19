@@ -28,20 +28,21 @@
                         <div class="p-2"><b>${{ game.price }}</b></div>
                     </div>
                     <div>
-                        {% if not game in wish_list %}
-                            <form method="post">
-                                {% csrf_token %}
-                                <button type="submit" name="add-wishlist"
-                                        class="btn btn-success border border-black rounded mx-5">
-                                    Add to Wishlist
-                                </button>
-                            </form>
-                        {% else %}
+                        {% if game in owned_games %}
+                        {% elif game in wish_list %}
                             <form method="post">
                                 {% csrf_token %}
                                 <button type="submit" name="remove-wishlist"
                                         class="btn btn-danger border border-black rounded mx-5">
                                     Remove from Wishlist
+                                </button>
+                            </form>
+                        {% else %}
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type="submit" name="add-wishlist"
+                                        class="btn btn-success border border-black rounded mx-5">
+                                    Add to Wishlist
                                 </button>
                             </form>
                         {% endif %}

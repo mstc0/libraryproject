@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Delete Review{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container w-50 p-3">
+        <form method="post">{% csrf_token %}
+            <p>Are you sure you want to delete review for <b>{{ object.game.title }}</b>?</p>
+            <p><b>Positive:</b> {{ object.is_positive }}</p>
+            <p style="word-break: break-word"><b>Review Content:</b> {{ object.review_content }}</p>
+            {{ form }}
+            <input type="submit" value="Delete" class="btn btn-danger">
+        </form>
+    </div>
+{% endblock %}

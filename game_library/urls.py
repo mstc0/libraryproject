@@ -52,6 +52,7 @@ urlpatterns = [
     path('view/apigame/<steamid>', game.GameAPIDetailView.as_view(), name='game-api-read-detail'),
     path('view/game/<int:pk>', game.GameDetailView.as_view(), name='game-read-detail'),
     path('view/game/<int:pk>/addreview', views.ReviewCreateView.as_view(), name='game-add-review'),
+    path('view/game/<int:pk>/deletereview', views.ReviewDeleteView.as_view(), name='game-delete-review'),
     # -- GENRE --
     path('manage/genre/create', genre.GenreCreateView.as_view(), name='genre-create'),
     path('manage/genre/update/<pk>', genre.GenreUpdateView.as_view(), name='genre-update'),

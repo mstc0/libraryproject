@@ -1,10 +1,11 @@
 import datetime
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.views import LogoutView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, DeleteView
 
 from library import forms, models
 from .cart import Cart
@@ -99,6 +100,20 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('game-read-detail', kwargs={'pk': self.kwargs['pk']})
+
+
+class ReviewDeleteView(LoginRequiredMixin, DeleteView):
+    template_name = 'crud/game/game-delete-review.html'
+    success_url = reverse_lazy('my-reviews')
+    model = models.Review
+
+    def get_object(self, queryset=None):
+        game_id = self.kwargs['pk']
+        game = get_object_or_404(models.Game, id=game_id)
+        user = get_object_or_404(models.UserExtraProfile, user=self.request.user)
+        review = get_object_or_404(models.Review, game=game, user=user)
+
+        return review
 
 
 @login_required
