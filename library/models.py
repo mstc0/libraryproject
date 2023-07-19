@@ -28,7 +28,7 @@ class UserExtraProfile(models.Model):
         remover_friend_list = self
         remover_friend_list.remove_friend(target)
         # removing friend from target list
-        target_friend_list = self.objects.get(user=target)
+        target_friend_list = UserExtraProfile.objects.get(display_name=target)
         target_friend_list.remove_friend(self)
         self.save()
 

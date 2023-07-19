@@ -35,7 +35,7 @@ class ProfileView(View):
             if self.request.user.is_authenticated:
                 my_profile = models.UserExtraProfile.objects.get(user=req.user)
                 friend_requests = models.FriendRequest.objects.all()
-                is_requested = friend_requests.filter(sender=my_profile, receiver=user_profile, is_active=True)
+                is_requested = friend_requests.filter(sender=my_profile, receiver=user_profile, is_active=True).first()
             else:
                 my_profile = None
                 is_requested = None
@@ -46,22 +46,26 @@ class ProfileView(View):
 
     def post(self, request, pk):
         if 'accept' in request.POST:
-            receiver = models.FriendRequest.objects.all().filter(receiver=request.POST['accept'])
-            receiver[0].accept()
+            friend_request = models.FriendRequest.objects.get(id=request.POST['accept'])
+            friend_request.accept()
             return redirect(request.META['HTTP_REFERER'])
         elif 'decline' in request.POST:
-            receiver = models.FriendRequest.objects.all().filter(receiver=request.POST['decline'])
-            receiver[0].decline()
+            friend_request = models.FriendRequest.objects.get(id=request.POST['decline'])
+            friend_request.decline()
             return redirect(request.META['HTTP_REFERER'])
         elif 'cancel' in request.POST:
-            receiver = models.FriendRequest.objects.all().filter(receiver=request.POST['cancel'])
-            print(receiver[0])
-            receiver[0].cancel()
+            friend_request = models.FriendRequest.objects.get(id=request.POST['cancel'])
+            friend_request.cancel()
             return redirect(request.META['HTTP_REFERER'])
         elif 'cancel2' in request.POST:
-            receiver = models.FriendRequest.objects.all().filter(receiver=request.POST['cancel2'])
-            print(receiver[0])
-            receiver[0].cancel()
+            friend_request = models.FriendRequest.objects.get(id=request.POST['cancel2'])
+            friend_request.cancel()
+            return redirect(request.META['HTTP_REFERER'])
+        elif 'unfriend' in request.POST:
+            profile = models.UserExtraProfile.objects.get(user=self.request.user)
+            user = models.User.objects.get(id=pk)
+            user_profile = models.UserExtraProfile.objects.get(user=user)
+            profile.unfriend(user_profile)
             return redirect(request.META['HTTP_REFERER'])
 
 

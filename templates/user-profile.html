@@ -37,17 +37,22 @@
                     <tr>
                         {% if profile in my_profile.friends.all %}
                             <th class="text-end" scope="row">
-                                <button type="button" class="btn btn-success" style="--bs-btn-padding-y: .1rem;
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger" name="unfriend"
+                                            value="{{ is_requested.id }}" style="--bs-btn-padding-y: .1rem;
                                                 --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
-                                        " disabled>Added as Friend
-                                </button>
+                                        ">
+                                        Remove Friend
+                                    </button>
+                                </form>
                             </th>
                         {% elif is_requested %}
                             <th class="text-end" scope="row">
                                 <form method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-danger" name="cancel2"
-                                            value="{{ is_requested.first.receiver.id }}" style="--bs-btn-padding-y: .1rem;
+                                            value="{{ is_requested.id }}" style="--bs-btn-padding-y: .1rem;
                                                 --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;
                                         ">
                                         Cancel Friend Request
