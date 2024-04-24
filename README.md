@@ -21,8 +21,6 @@ Project contains basic account funcionalities, homepage featuring added games, l
 * [![Django][Django]][Django-url]
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 ### Prerequisites
@@ -47,8 +45,6 @@ Project contains basic account funcionalities, homepage featuring added games, l
    py manage.py createsuperuser
    ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- USAGE EXAMPLES -->
@@ -67,7 +63,6 @@ This will pull list of products from Steam library. Selecting games from populat
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
