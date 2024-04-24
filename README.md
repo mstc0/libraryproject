@@ -25,10 +25,7 @@ Project contains basic account funcionalities, homepage featuring added games, l
 
 ### Prerequisites
 
-
-  ```sh
-  pip install -r requirements.txt
-  ```
+* Python 3.10
 
 ### Installation
 
@@ -36,6 +33,10 @@ Project contains basic account funcionalities, homepage featuring added games, l
    ```sh
    git clone https://github.com/mstc0/libraryproject.git
    ```
+3. Install requirements.txt
+    ```sh
+    pip install -r requirements.txt
+    ```
 2. Migrate Django
    ```sh
    py manage.py migrate
@@ -45,7 +46,10 @@ Project contains basic account funcionalities, homepage featuring added games, l
    py manage.py createsuperuser
    ```
 
-
+### Usage
+  ```sh
+   py manage.py createsuperuser
+   ```
 
 <!-- USAGE EXAMPLES -->
 ## Steam API
